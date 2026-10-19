@@ -1,0 +1,4 @@
+.claude/
+forms/src/
+node_modules/
+*.log

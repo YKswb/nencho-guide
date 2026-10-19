@@ -120,6 +120,67 @@ a{color:var(--shu2)}
 .ctxt b{font-family:"Zen Maru Gothic"}
 .ctxt .hw{font-family:"Yomogi",cursive; color:var(--shu2); display:block; margin-top:2px; font-size:12.5px}
 
+/* ---- real form image + tap hotspots ---- */
+.fimg-box{background:var(--card); border:1.5px solid var(--line2); border-radius:var(--r); padding:12px 12px 10px; box-shadow:var(--shadow); margin-bottom:14px}
+.fimg-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-bottom:8px}
+.fimg-title{font-family:"Zen Maru Gothic"; font-weight:700; font-size:14px; display:flex; align-items:center; gap:8px; flex-wrap:wrap}
+.fimg-title small{font-weight:400; font-family:"Zen Kaku Gothic New"; font-size:11.5px; color:var(--ink2)}
+.fimg-tools{display:flex; gap:5px; align-items:center}
+.zbtn{font-family:"Zen Maru Gothic"; font-weight:700; font-size:12.5px; padding:5px 11px; border-radius:999px; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); cursor:pointer}
+.zbtn[aria-pressed="true"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.fimg-scroll{overflow:auto; max-height:72vh; border:1px solid var(--line); border-radius:10px; background:#e9e4d6; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y pinch-zoom}
+.fimg-scroll.tall{max-height:none}  /* 縦長の様式（住宅ローン）は「全体」で全部見えるように */
+.fimg-scroll.tall.zoomed{max-height:80vh}
+.fimg{position:relative; width:100%; min-width:100%; line-height:0; transition:width .2s}
+.fimg img{width:100%; height:auto; display:block; user-select:none; -webkit-user-drag:none}
+.hs{position:absolute; border:2px solid rgba(200,70,44,.75); background:rgba(200,70,44,.07); border-radius:5px; cursor:pointer; padding:0; transition:.15s; outline-offset:2px}
+.hs:hover,.hs:focus-visible{background:rgba(200,70,44,.17); border-color:var(--shu)}
+.hs .hn{position:absolute; left:-3px; top:-3px; transform:translate(-40%,-40%); min-width:22px; height:22px; padding:0 5px; border-radius:999px; background:var(--shu); color:#fff;
+  font-family:"Zen Maru Gothic"; font-weight:900; font-size:12px; line-height:22px; text-align:center; box-shadow:0 2px 6px rgba(0,0,0,.25); white-space:nowrap}
+.hs.co{border-color:rgba(84,97,108,.55); background:rgba(84,97,108,.07)} .hs.co .hn{background:var(--ink2)}
+.hs.dim{opacity:.35} .hs.dim:hover{opacity:.8}
+.hs.on{border-color:var(--shu); background:rgba(200,70,44,.14); animation:hspulse 1.6s ease-in-out 2}
+@keyframes hspulse{0%,100%{box-shadow:0 0 0 0 rgba(200,70,44,.0)}50%{box-shadow:0 0 0 7px rgba(200,70,44,.25)}}
+.fimg-hint{font-size:11.5px; color:var(--ink2); margin:8px 0 0; line-height:1.6}
+.fimg-src{font-size:11px; color:var(--ink3); margin:4px 0 0}
+.fimg-src a{color:var(--ink3)}
+.spot-list{list-style:none; margin:0 0 4px; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:7px}
+@media(max-width:600px){.spot-list{grid-template-columns:1fr}}
+.spot-list li{display:flex; gap:9px; align-items:flex-start; background:var(--card); border:1px solid var(--line); border-radius:11px; padding:9px 11px; cursor:pointer}
+.spot-list li:hover{border-color:var(--shu); background:var(--shu-wash)}
+.spot-list .hot{flex:0 0 auto; margin-top:2px}
+.spot-list .co{background:var(--ink2)}
+.spot-list .t{font-size:13px; line-height:1.55}
+.spot-list .t b{font-family:"Zen Maru Gothic"} .spot-list .t small{display:block; color:var(--ink2); font-size:11.5px}
+.spot-list li.dim{opacity:.45}
+
+/* example sheet (bottom sheet on phone, dialog on desktop) */
+.sheet-bg{position:fixed; inset:0; background:rgba(34,48,60,.45); z-index:60; display:none; backdrop-filter:blur(2px)}
+.sheet-bg.open{display:block}
+.sheet{position:fixed; left:0; right:0; bottom:0; z-index:61; background:var(--card); border-radius:18px 18px 0 0; max-height:82vh; display:none; flex-direction:column;
+  box-shadow:0 -10px 40px rgba(34,48,60,.35); transform:translateY(12px); opacity:0; transition:.2s}
+.sheet.open{display:flex; transform:none; opacity:1}
+@media(min-width:720px){.sheet{left:50%; right:auto; bottom:auto; top:50%; transform:translate(-50%,-50%) scale(.98); width:min(560px,92vw); border-radius:18px; max-height:86vh}
+  .sheet.open{transform:translate(-50%,-50%)}}
+.sheet-h{display:flex; align-items:center; gap:10px; padding:14px 16px 10px; border-bottom:1px solid var(--line)}
+.sheet-h .hot{width:26px; height:26px; font-size:13px}
+.sheet-h h3{font-size:16px; margin:0; flex:1; line-height:1.35}
+.sheet-x{border:0; background:var(--paper); width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:18px; color:var(--ink2); display:grid; place-items:center}
+.sheet-b{padding:12px 16px 14px; overflow:auto; font-size:13.5px; line-height:1.75}
+.who{display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:999px; margin-bottom:8px}
+.who-all{background:var(--ok-wash); color:var(--ok)} .who-some{background:var(--warn-wash); color:var(--warn)} .who-co{background:#E6E8EA; color:var(--ink2)}
+.ex{background:#fff; border:1.5px dashed #9BB0D9; border-radius:12px; padding:10px 13px; margin:8px 0 10px}
+.ex .exl{font-size:10.5px; font-weight:700; color:#5c6f94; letter-spacing:.06em; margin-bottom:4px}
+.ex .exv{font-family:"Yomogi",cursive; color:#23489a; font-size:15.5px; line-height:1.7}
+.ex .exv .lb{font-family:"Zen Kaku Gothic New"; color:var(--ink2); font-size:11.5px; display:inline-block; min-width:7em}
+.ex .exv .ln{display:block}
+.sheet-b .note{background:var(--warn-wash); border-left:4px solid var(--warn); border-radius:8px; padding:8px 11px; font-size:12.5px; margin-top:8px}
+.sheet-b .note b{color:var(--warn)}
+.sheet-f{display:flex; justify-content:space-between; align-items:center; gap:8px; padding:10px 16px 14px; border-top:1px solid var(--line)}
+.nbtn{font-family:"Zen Maru Gothic"; font-weight:700; font-size:13px; padding:8px 14px; border-radius:999px; border:1.5px solid var(--line2); background:#fff; color:var(--ink); cursor:pointer}
+.nbtn:disabled{opacity:.35; cursor:default}
+.sheet-f .pos{font-size:12px; color:var(--ink2)}
+
 /* cards */
 .cards{display:grid; grid-template-columns:1fr 1fr; gap:11px; margin-bottom:4px}
 @media(max-width:560px){.cards{grid-template-columns:1fr}}
@@ -254,17 +315,17 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
       <button class="fnc" data-tab="form1">
         <span class="fno">①</span>
         <span class="fnm">扶養控除等申告書</span>
-        <span class="fhint">ほぼ全員が提出 ／ 扶養判定ツール</span>
+        <span class="fhint">ほぼ全員が提出 ／ 様式の記載例・扶養判定ツール</span>
       </button>
       <button class="fnc" data-tab="form2">
         <span class="fno">②</span>
         <span class="fnm">基礎・配偶者控除等申告書</span>
-        <span class="fhint">ほぼ全員が提出 ／ 基礎控除・配偶者概算</span>
+        <span class="fhint">ほぼ全員が提出 ／ 様式の記載例・基礎控除・配偶者概算</span>
       </button>
       <button class="fnc" data-tab="form3">
         <span class="fno">③</span>
         <span class="fnm">保険料控除申告書</span>
-        <span class="fhint">控除を受ける人 ／ 保険料控除概算</span>
+        <span class="fhint">控除を受ける人 ／ 様式の記載例・保険料控除概算</span>
       </button>
       <button class="fnc" data-tab="form4">
         <span class="fno">④</span>
@@ -272,6 +333,14 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
         <span class="fhint">控除2年目以降の人 ／ 控除額概算</span>
       </button>
     </div>
+  </div>
+
+  <div class="alert-box">
+    <b>令和8年分の主な変更点（令和8年度税制改正）</b><br>
+    ・基礎控除が引き上げ（合計所得489万円以下は<b>104万円</b>、655万円以下は67万円、2,350万円以下は<b>62万円</b>）<br>
+    ・給与所得控除の最低額が65万円→<b>74万円</b>に（所得税がかからない給与収入の目安：約<b>178万円</b>）<br>
+    ・扶養親族・配偶者控除の所得要件が58万円→<b>62万円</b>（給与収入123万円→<b>136万円</b>）に<br>
+    ・<b>23歳未満の扶養親族がいる人</b>は一般生命保険料（新契約）の控除上限が4万円→<b>6万円</b>に
   </div>
 
   <div class="sec-h"><span class="no">STEP</span><h2>年末調整の流れ</h2></div>
@@ -296,32 +365,22 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
   <div class="sec-h"><span class="no">①</span><h2>扶養控除等（異動）申告書</h2></div>
   <p class="sec-sub">ほぼ全員が提出する書類です。家族（扶養している人）の情報を書きます。</p>
 
+  <p class="sec-sub" style="margin-top:-8px"><b>あなたの状況を選ぶ</b>と、書く欄だけが赤く光ります（複数当てはまる人は順番に切り替えて確認）。</p>
   <div class="ptabs" id="f1-tabs" role="tablist">
     <button class="ptab" data-p="single" aria-selected="true">独身・扶養なし</button>
     <button class="ptab" data-p="spouse">配偶者を扶養</button>
-    <button class="ptab" data-p="college">大学生の子がいる</button>
-    <button class="ptab" data-p="mid">中途入社</button>
+    <button class="ptab" data-p="dual">共働き・子あり</button>
+    <button class="ptab" data-p="u16">16歳未満の子だけ</button>
+    <button class="ptab" data-p="kids">高校生・大学生の子</button>
+    <button class="ptab" data-p="parent">親を扶養</button>
+    <button class="ptab" data-p="solo">ひとり親・寡婦</button>
+    <button class="ptab" data-p="disab">障害者がいる</button>
   </div>
   <div class="note-pattern" id="f1-note"></div>
+  <div class="callout-box" style="margin:-4px 0 16px"><b>中途入社の人へ</b>　記入方法は同じですが、<b>前職の源泉徴収票</b>を必ず一緒に提出してください（前職の給与を合算して精算します）。2か所以上から給与がある人は、この申告書は<b>主な勤務先1か所だけ</b>に出します。</div>
 
-  <div class="formwrap">
-    <div class="formsheet">
-      <div class="fhead"><span>令和8年分 給与所得者の扶養控除等（異動）申告書</span><span>※見本</span></div>
-      <div class="frow"><div class="fcell"><span class="lbl"><span class="hot">1</span>あなたの情報</span><span class="ex">記入 太郎／○○区…</span></div><div class="fcell"><span class="lbl">個人番号</span><span class="ex">会社の指示に従う</span></div></div>
-      <div class="frow"><div class="fcell"><span class="lbl"><span class="hot">2</span>源泉控除対象配偶者</span><span class="ex">記入 花子（所得の見積）</span></div></div>
-      <div class="frow"><div class="fcell"><span class="lbl"><span class="hot">3</span>控除対象扶養親族（16歳以上）</span><span class="ex">記入 一郎（長男・20歳）</span></div><div class="fcell"><span class="lbl"><span class="hot">4</span>特定扶養親族</span><span class="ex">✓（19〜22歳）</span></div></div>
-      <div class="frow"><div class="fcell"><span class="lbl"><span class="hot">5</span>障害者・寡婦・ひとり親・勤労学生</span><span class="ex">該当すれば✓</span></div></div>
-      <div class="frow"><div class="fcell"><span class="lbl"><span class="hot">6</span>16歳未満の扶養親族（住民税）</span><span class="ex">記入 次郎（10歳）</span></div></div>
-    </div>
-    <ul class="callouts">
-      <li><span class="hot">1</span><div class="ctxt"><b>あなたの氏名・住所</b>を記入。<span class="hw">マイナンバーは会社の案内どおりに！</span></div></li>
-      <li><span class="hot">2</span><div class="ctxt"><b>配偶者</b>を扶養している場合に記入。年収の見積りで対象か決まります。</div></li>
-      <li><span class="hot">3</span><div class="ctxt"><b>16歳以上の扶養親族</b>を記入（子・親など）。</div></li>
-      <li><span class="hot">4</span><div class="ctxt"><b>19〜22歳</b>の子は「特定扶養親族」。<span class="hw">大学生の子がいる人は要チェック！</span></div></li>
-      <li><span class="hot">5</span><div class="ctxt">障害者・ひとり親などに当てはまる場合のみ✓。</div></li>
-      <li><span class="hot">6</span><div class="ctxt"><b>16歳未満</b>の子は所得税の控除対象外ですが、<b>住民税</b>のため記入します。</div></li>
-    </ul>
-  </div>
+  <div class="fimg-box" id="fimg-form1"></div>
+  <ul class="spot-list" id="spots-form1"></ul>
 
   <div class="sim">
     <div class="sim-h"><span class="tri">▶</span> 扶養 判定ツール <span class="sim-badge">概算・目安</span></div>
@@ -339,9 +398,9 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
       <div class="sim-out-row"><span>合計所得金額（概算）</span><b id="fz-shotoku">¥0</b></div>
       <div class="sim-judge" id="fz-judge"></div>
     </div>
-    <p class="sim-note">※給与収入のみ・他の所得がない前提の概算です（1円未満切り捨て）。最終判定は申告書・勤務先の計算によります。</p>
+    <p class="sim-note">※給与収入のみ・他の所得がない前提の概算です（1円未満切り捨て、令和8年分の給与所得控除〔最低74万円〕を反映）。扶養親族・配偶者控除の所得要件は合計所得62万円（給与収入136万円）以下です。最終判定は申告書・勤務先の計算によります。</p>
   </div>
-  <div class="callout-box"><b>よくある間違い</b>　子のアルバイト収入が多いと扶養から外れることがあります。年収の見込みを確認してから記入しましょう。</div>
+  <div class="callout-box"><b>よくある間違い</b>　子のアルバイト収入が多いと扶養から外れることがあります（令和8年分の目安：給与収入136万円超。19〜22歳は197万円まで特定親族特別控除あり）。年収の見込みを確認してから記入しましょう。</div>
 </div>
 </div>
 
@@ -350,10 +409,12 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
 <div class="wrap">
   <div class="sec-h"><span class="no">②</span><h2>基礎控除・配偶者控除等・特定親族特別控除・所得金額調整控除 申告書</h2></div>
   <p class="sec-sub">4つが1枚になった書類です。当てはまる欄だけ書けば大丈夫。</p>
-  <div class="cards">
-    <div class="pcard"><h3><span class="dot"></span>基礎控除</h3><p>原則みんなが対象。あなたの今年の合計所得の見積りを書いて控除額を記入します。</p></div>
-    <div class="pcard"><h3><span class="dot"></span>配偶者控除・配偶者特別控除</h3><p>配偶者を扶養している人。双方の所得から控除額を判定します。</p></div>
-    <div class="pcard"><h3><span class="dot"></span>特定親族特別控除 <span class="new">令和7年〜 新設</span></h3><p>19〜22歳の親族で合計所得が58万円超123万円以下の人がいる場合の控除です。</p></div>
+  <div class="fimg-box" id="fimg-form2"></div>
+  <ul class="spot-list" id="spots-form2"></ul>
+  <div class="cards" style="margin-top:14px">
+    <div class="pcard"><h3><span class="dot"></span>基礎控除 <span class="new">令和8年分 引上げ</span></h3><p>原則みんなが対象。あなたの今年の合計所得の見積りを書いて控除額を記入します。令和8年分は合計所得489万円以下で<b>104万円</b>、655万円以下で<b>67万円</b>、2,350万円以下で<b>62万円</b>。</p></div>
+    <div class="pcard"><h3><span class="dot"></span>配偶者控除・配偶者特別控除</h3><p>配偶者を扶養している人。双方の所得から控除額を判定します。配偶者控除は配偶者の合計所得<b>62万円以下</b>（給与収入136万円以下）が対象。</p></div>
+    <div class="pcard"><h3><span class="dot"></span>特定親族特別控除 <span class="new">令和7年〜 新設</span></h3><p>19〜22歳の親族で合計所得が<b>62万円超123万円以下</b>（給与収入136万円超197万円以下）の人がいる場合の控除です。</p></div>
     <div class="pcard"><h3><span class="dot"></span>所得金額調整控除</h3><p>給与収入850万円超で23歳未満の扶養親族がいる等の条件に当てはまる人が記入します。</p></div>
   </div>
   <div class="sim">
@@ -373,9 +434,9 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
       <div class="sim-out-row"><span>配偶者（特別）控除（概算）</span><b id="kb-haigu">¥0</b></div>
       <div class="sim-judge" id="kb-judge"></div>
     </div>
-    <p class="sim-note">※給与収入のみ・他の所得がない前提の概算です（1円未満切り捨て、令和7・8年分の基礎控除を反映）。本人の合計所得が1,000万円超の場合、配偶者（特別）控除は受けられません。</p>
+    <p class="sim-note">※給与収入のみ・他の所得がない前提の概算です（1円未満切り捨て、令和8年度税制改正後の令和8年分の給与所得控除・基礎控除を反映）。本人の合計所得が1,000万円超の場合、配偶者（特別）控除は受けられません。</p>
   </div>
-  <div class="callout-box"><b>ポイント</b>　令和7年の改正で控除額や対象の範囲が変わりました。記入欄や金額は<b>最新（令和8年分）の様式</b>に従ってください。</div>
+  <div class="callout-box"><b>ポイント</b>　令和8年度の改正で、令和8年分から<b>基礎控除（最大104万円）と給与所得控除（最低74万円）が引き上げられ</b>、扶養・配偶者の所得要件も58万円→62万円（給与収入123万円→136万円）に変わりました。記入欄や金額は<b>最新（令和8年分）の様式</b>に従ってください。</div>
 </div>
 </div>
 
@@ -384,32 +445,19 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
 <div class="wrap">
   <div class="sec-h"><span class="no">③</span><h2>保険料控除申告書</h2></div>
   <p class="sec-sub">自分で払った保険料などを申告して控除を受けます。<b>証明書の添付が必須</b>です。</p>
-  <div class="cards">
-    <div class="pcard"><h3><span class="dot"></span>生命保険料控除</h3><p>一般・介護医療・個人年金の3区分。証明書の「申告額」を転記します。</p></div>
+  <div class="fimg-box" id="fimg-form3"></div>
+  <ul class="spot-list" id="spots-form3"></ul>
+  <div class="cards" style="margin-top:14px">
+    <div class="pcard"><h3><span class="dot"></span>生命保険料控除 <span class="new">令和8年分〜 特例</span></h3><p>一般・介護医療・個人年金の3区分。証明書の「申告額」を転記します。<b>23歳未満の扶養親族がいる人</b>は一般（新契約）の上限が6万円に。</p></div>
     <div class="pcard"><h3><span class="dot"></span>地震保険料控除</h3><p>地震保険の証明書の金額を記入。火災保険のみは対象外です。</p></div>
     <div class="pcard"><h3><span class="dot"></span>社会保険料控除</h3><p>給与天引き以外で払った国民年金・国民健康保険など。</p></div>
     <div class="pcard"><h3><span class="dot"></span>小規模企業共済等掛金控除</h3><p>iDeCoなど。払込証明書を添付します。</p></div>
   </div>
-  <div class="sim">
-    <div class="sim-h"><span class="tri">▶</span> 保険料控除 概算ツール <span class="sim-badge">概算・目安</span></div>
-    <p class="sim-lead">証明書の「申告額（年末までに払う見込み額）」を入れてください。新／旧は証明書に記載があります。</p>
-    <div class="sim-grid">
-      <label>一般生命保険料・新（H24以降契約）<div class="inwrap"><input id="h-genN" inputmode="numeric" value="80000"><span class="unit">円</span></div></label>
-      <label>一般生命保険料・旧（H23以前契約）<div class="inwrap"><input id="h-genO" inputmode="numeric" value="0"><span class="unit">円</span></div></label>
-      <label>介護医療保険料（新のみ）<div class="inwrap"><input id="h-care" inputmode="numeric" value="35000"><span class="unit">円</span></div></label>
-      <label>個人年金保険料・新<div class="inwrap"><input id="h-penN" inputmode="numeric" value="0"><span class="unit">円</span></div></label>
-      <label>個人年金保険料・旧<div class="inwrap"><input id="h-penO" inputmode="numeric" value="60000"><span class="unit">円</span></div></label>
-      <label>地震保険料<div class="inwrap"><input id="h-eq" inputmode="numeric" value="24000"><span class="unit">円</span></div></label>
-      <label>旧長期損害保険料<div class="inwrap"><input id="h-long" inputmode="numeric" value="0"><span class="unit">円</span></div></label>
-    </div>
-    <div class="sim-out">
-      <div class="sim-out-row"><span>生命保険料控除（概算）</span><b id="h-life">¥0</b></div>
-      <div class="sim-out-row"><span>地震保険料控除（概算）</span><b id="h-jishin">¥0</b></div>
-      <div class="sim-out-row total"><span>保険料控除 合計（概算）</span><b id="h-total">¥0</b></div>
-    </div>
-    <p class="sim-note">※概算です（1円未満切り捨て）。生命保険料控除は3区分合計で上限12万円、地震保険料控除は上限5万円。新旧併用時は有利な方を自動採用しています。</p>
+  <div class="ask" style="margin-top:16px">
+    <div class="t"><b>▶ 保険料控除 計算ツール</b><span class="new" style="margin-left:6px">スマホ向け</span><br>証明書の金額を1枚ずつ入れると、控除額と<b>申告書のどの欄に何を書くか</b>がわかります。23歳未満の扶養親族がいる人の特例（上限6万円）にも対応。</div>
+    <a class="btn" href="hoken.html">計算ツールを開く →</a>
   </div>
-  <div class="callout-box"><b>注意</b>　証明書の<b>「証明額」ではなく「申告額」</b>を書くのが基本です。区分（一般・介護医療・個人年金、新・旧）の取り違えにご注意ください。</div>
+  <div class="callout-box"><b>注意</b>　証明書の<b>「証明額」ではなく「申告額」</b>を書くのが基本です。区分（一般・介護医療・個人年金、新・旧）の取り違えにご注意ください。<br><b>23歳未満の扶養親族がいる人</b>は、申告書の特例欄（該当チェック・扶養親族の記載）を忘れずに。</div>
 </div>
 </div>
 
@@ -433,6 +481,9 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
     <li><span class="hot">A</span><div class="ctxt"><b>税務署から届く「（特定増改築等）住宅借入金等特別控除証明書」</b><span class="hw">初年度の確定申告後、残り年分がまとめて郵送されます。大切に保管！</span></div></li>
     <li><span class="hot">B</span><div class="ctxt"><b>金融機関の「住宅取得資金に係る借入金の年末残高等証明書」</b>（年末残高証明書）<span class="hw">10〜11月頃に銀行から届きます</span></div></li>
   </ul>
+
+  <div class="fimg-box" id="fimg-form4" style="margin-top:14px"></div>
+  <ul class="spot-list" id="spots-form4"></ul>
 
   <div class="sim">
     <div class="sim-h"><span class="tri">▶</span> 住宅ローン控除 概算ツール <span class="sim-badge">概算・目安</span></div>
@@ -486,7 +537,7 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
       <p class="disclaimer">
         ※ 記入見本・概算ツールはすべて<b>目安（概算）</b>です（1円未満切り捨て）。実際の控除額・税額は最新の公式様式と勤務先の計算によります。<br>
         ※ 質問フォームには<b>マイナンバー・口座番号などの個人情報を書かないで</b>ください。<br>
-        最終更新：<span id="updated">2026-06-09</span>
+        最終更新：<span id="updated">2026-10-19</span>
       </p>
     </div>
     <div>
@@ -495,6 +546,14 @@ footer{border-top:1px solid var(--line); background:rgba(251,247,236,.65); margi
     </div>
   </div>
 </footer>
+
+<!-- 記載例シート（タップで開く） -->
+<div class="sheet-bg" id="sheet-bg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheet-title" aria-hidden="true">
+  <div class="sheet-h"><span class="hot" id="sheet-n">1</span><h3 id="sheet-title"></h3><button class="sheet-x" id="sheet-x" aria-label="閉じる">×</button></div>
+  <div class="sheet-b" id="sheet-b"></div>
+  <div class="sheet-f"><button class="nbtn" id="sheet-prev">← 前の欄</button><span class="pos" id="sheet-pos"></span><button class="nbtn" id="sheet-next">次の欄 →</button></div>
+</div>
 
 <div class="proto-badge">PROTOTYPE</div>
 
@@ -507,23 +566,30 @@ const CONFIG={
   office:"柏葉幸徳税理士事務所",
   officeDetail:"書き方のご質問はフォームまたは窓口へ。社内のことは総務部へ。",
   questionFormUrl:"",
-  updated:"2026-06-09",
+  updated:"2026-10-19",
   qaSheetUrl:""
 };
 
-/* ===== 計算ロジック（令和7・8年分） ===== */
+/* ===== 計算ロジック（令和8年分・令和8年度税制改正後） =====
+   出典：国税庁 タックスアンサー No.1410（給与所得控除）/ No.1199（基礎控除）/
+         No.1195（配偶者特別控除）/ No.1177（特定親族特別控除）/ No.1140（生命保険料控除）
+   ・給与所得控除の最低保障額 65万→74万（令和8・9年分。収入220万円以下）
+   ・基礎控除 令和8・9年分：所得489万以下104万／655万以下67万／2,350万以下62万（以降48万・32万・16万・0）
+     ※令和10年分以降は132万以下99万・2,350万以下62万（国税庁 令和8年分 基礎控除申告書の「控除額の計算」欄で確認）
+   ・扶養親族・同一生計配偶者の所得要件 58万→62万（給与収入 123万→136万）
+   ・特定親族特別控除・配偶者特別控除の下限 58万超→62万超（上限123万／133万は据え置き）
+   ・23歳未満の扶養親族がいる人は一般生命保険料（新契約）の控除上限 4万→6万（計算は hoken.html） */
 const num=v=>{const n=parseInt(String(v).replace(/[^\d]/g,""),10);return isNaN(n)?0:n;};
 const yen=n=>"¥"+Math.floor(n).toLocaleString("ja-JP");
-function kyuyoKojo(i){if(i<=1900000)return 650000;if(i<=3600000)return Math.floor(i*.3)+80000;if(i<=6600000)return Math.floor(i*.2)+440000;if(i<=8500000)return Math.floor(i*.1)+1100000;return 1950000;}
+const man=n=>(Math.floor(n/1000)/10).toLocaleString("ja-JP");
+const FUYO_LIMIT=620000;        // 扶養親族・同一生計配偶者の合計所得要件（給与収入136万円）
+function kyuyoKojo(i){if(i<=2200000)return 740000;if(i<=3600000)return Math.floor(i*.3)+80000;if(i<=6600000)return Math.floor(i*.2)+440000;if(i<=8500000)return Math.floor(i*.1)+1100000;return 1950000;}
 const kShotoku=i=>Math.max(0,i-kyuyoKojo(i));
-function kisoKojo(g){if(g<=1320000)return 950000;if(g<=3360000)return 880000;if(g<=4890000)return 680000;if(g<=6550000)return 630000;if(g<=23500000)return 580000;if(g<=24000000)return 480000;if(g<=24500000)return 320000;if(g<=25000000)return 160000;return 0;}
+function kisoKojo(g){if(g<=4890000)return 1040000;if(g<=6550000)return 670000;if(g<=23500000)return 620000;if(g<=24000000)return 480000;if(g<=24500000)return 320000;if(g<=25000000)return 160000;return 0;}
 const honninTier=g=>{if(g<=9000000)return 0;if(g<=9500000)return 1;if(g<=10000000)return 2;return -1;};
-function haiguControl(hg,my,elderly){const t=honninTier(my);if(t<0)return 0;if(hg<=580000)return(elderly?[480000,320000,160000]:[380000,260000,130000])[t];if(hg<=1330000){let r;if(hg<=950000)r=[380000,260000,130000];else if(hg<=1000000)r=[360000,240000,120000];else if(hg<=1050000)r=[310000,210000,110000];else if(hg<=1100000)r=[260000,180000,90000];else if(hg<=1150000)r=[210000,140000,70000];else if(hg<=1200000)r=[160000,110000,60000];else if(hg<=1250000)r=[110000,80000,40000];else if(hg<=1300000)r=[60000,40000,20000];else r=[30000,20000,10000];return r[t];}return 0;}
-function tss(s){if(s<=580000)return 0;if(s<=850000)return 630000;if(s<=900000)return 610000;if(s<=950000)return 510000;if(s<=1000000)return 410000;if(s<=1050000)return 310000;if(s<=1100000)return 210000;if(s<=1150000)return 110000;if(s<=1200000)return 60000;if(s<=1230000)return 30000;return 0;}
-function sN(p){if(p<=0)return 0;if(p<=20000)return p;if(p<=40000)return Math.floor(p/2)+10000;if(p<=80000)return Math.floor(p/4)+20000;return 40000;}
-function sO(p){if(p<=0)return 0;if(p<=25000)return p;if(p<=50000)return Math.floor(p/2)+12500;if(p<=100000)return Math.floor(p/4)+25000;return 50000;}
-function sCat(n,o){const a=sN(n),b=sO(o);if(n>0&&o>0)return Math.max(b,Math.min(a+b,40000));if(o>0)return b;return a;}
-function jishinKojo(eq,lg){const a=Math.min(eq,50000);let b=0;if(lg>0){if(lg<=10000)b=lg;else if(lg<=20000)b=Math.floor(lg/2)+5000;else b=15000;}return Math.min(a+b,50000);}
+function haiguControl(hg,my,elderly){const t=honninTier(my);if(t<0)return 0;if(hg<=FUYO_LIMIT)return(elderly?[480000,320000,160000]:[380000,260000,130000])[t];if(hg<=1330000){let r;if(hg<=950000)r=[380000,260000,130000];else if(hg<=1000000)r=[360000,240000,120000];else if(hg<=1050000)r=[310000,210000,110000];else if(hg<=1100000)r=[260000,180000,90000];else if(hg<=1150000)r=[210000,140000,70000];else if(hg<=1200000)r=[160000,110000,60000];else if(hg<=1250000)r=[110000,80000,40000];else if(hg<=1300000)r=[60000,40000,20000];else r=[30000,20000,10000];return r[t];}return 0;}
+function tss(s){if(s<=FUYO_LIMIT)return 0;if(s<=850000)return 630000;if(s<=900000)return 610000;if(s<=950000)return 510000;if(s<=1000000)return 410000;if(s<=1050000)return 310000;if(s<=1100000)return 210000;if(s<=1150000)return 110000;if(s<=1200000)return 60000;if(s<=1230000)return 30000;return 0;}
+// 保険料控除の計算は hoken.html（スマホ向け計算ツール）に移動
 
 /* ===== DOM helpers ===== */
 const $=s=>document.querySelector(s);
@@ -562,14 +628,18 @@ function initTabs(){
 
 /* ===== PATTERN TABS (form1) ===== */
 const F1_NOTES={
-  single:"<b>独身・扶養なし：</b> 記入するのは <b>①あなたの情報</b> が中心です。扶養している家族がいなければ家族の欄は空欄でOK。",
-  spouse:"<b>配偶者を扶養：</b> <b>②源泉控除対象配偶者</b> に配偶者を記入。年収の見積りで対象か決まります（②の申告書とセットで判定）。",
-  college:"<b>大学生の子がいる：</b> <b>③扶養親族</b> に記入し、19〜22歳なら <b>④特定扶養</b> にチェック。アルバイト収入が多いと外れる場合あり。",
-  mid:"<b>中途入社：</b> 記入方法は同じですが、<b>前職の源泉徴収票</b> を必ず提出してください（前職給与を合算して精算します）。"
+  single:"<b>独身・扶養なし：</b> 記入するのは <b>❶あなたの情報</b> だけです（配偶者の有無は「無」に○）。家族の欄はすべて空欄でOK。下の様式で赤く光っている欄をタップすると記載例が出ます。",
+  spouse:"<b>配偶者を扶養（パート等）：</b> <b>❶</b>（配偶者の有無「有」）に加えて <b>❸源泉控除対象配偶者</b> に配偶者を記入し、<b>❻所得の見積額</b> を書きます（パート年収130万円なら所得56万円）。配偶者の所得が95万円超（給与169万円超）なら❸には書かず、②の配偶者控除等申告書で配偶者特別控除を判定します。",
+  dual:"<b>共働き・子あり：</b> 配偶者は扶養に入れないので <b>❸は空欄</b>（❶の配偶者の有無は「有」）。子は<b>夫婦のどちらか一方</b>の扶養にします。あなたの扶養にするなら <b>❹</b>（16歳以上）／<b>❿</b>（16歳未満）に記入、配偶者の扶養にするなら <b>❾</b> に子の氏名と配偶者の名前を書きます。",
+  u16:"<b>16歳未満の子だけ：</b> <b>❶</b>と、住民税のための <b>❿16歳未満の扶養親族</b> に子を記入します。所得税の扶養控除はありませんが、住民税の計算に使うので必ず書きます。",
+  kids:"<b>高校生・大学生の子：</b> 16歳以上の子は <b>❹源泉控除対象親族</b> に記入し、バイト収入があれば <b>❻所得の見積額</b> も書きます。19〜22歳（平成16年1月2日〜平成20年1月1日生）は <b>❺特定扶養親族</b> に✓（控除63万円）。バイト収入が給与136万円を超えたら❺は『特定親族』側に✓し（174万円以下）、控除額は②の特定親族特別控除申告書で計算します。",
+  parent:"<b>親を扶養：</b> 親（義父母も可）の所得が62万円以下なら <b>❹</b> に記入し、<b>❻所得の見積額</b> を書きます。年金だけなら <b>65歳以上で年金収入172万円以下、65歳未満で122万円以下</b> が目安。70歳以上（昭和32年1月1日以前生）で同居なら <b>❺</b> の『同居老親等』に✓（控除58万円）、別居で生活費を送っているなら『その他』（48万円）。",
+  solo:"<b>ひとり親・寡婦：</b> <b>❽</b> の該当欄に✓します。<b>ひとり親</b>＝婚姻していない（事実婚なし）で、生計を一にする所得62万円以下の子がいて、本人の所得が500万円以下の人。<b>寡婦</b>＝夫と離婚・死別後に再婚していない人で一定の要件を満たす人（所得500万円以下）。子は <b>❹</b>（16歳以上）／<b>❿</b>（16歳未満）にも記入します。",
+  disab:"<b>障害者がいる：</b> 本人・同一生計の配偶者・扶養親族に障害者手帳などの該当者がいれば <b>❽</b> で区分（一般／特別／同居特別）に✓し、右の内容欄に手帳の種類・等級・交付日を書きます。16歳未満の子が障害者の場合も❽に✓（扶養控除はなくても障害者控除は受けられます）。該当する家族は <b>❸❹❿</b> にも通常どおり記入。"
 };
 function initPatternTabs(){
   const note=$("#f1-note"),tabs=[...document.querySelectorAll("#f1-tabs .ptab")];
-  const set=p=>{note.innerHTML=F1_NOTES[p];tabs.forEach(t=>t.setAttribute("aria-selected",t.dataset.p===p));};
+  const set=p=>{note.innerHTML=F1_NOTES[p];tabs.forEach(t=>t.setAttribute("aria-selected",t.dataset.p===p));applyPattern("form1",p);};
   tabs.forEach(t=>t.addEventListener("click",()=>set(t.dataset.p)));
   set("single");
 }
@@ -595,21 +665,21 @@ function renderChecklist(){
 function simFuyo(){
   const inc=num($("#fz-income").value),type=$("#fz-type").value;
   const shotoku=kShotoku(inc);
-  $("#fz-shotoku").textContent=yen(shotoku)+"（約"+(shotoku/10000)+"万円）";
+  $("#fz-shotoku").textContent=yen(shotoku)+"（約"+man(shotoku)+"万円）";
   const T=(cls,t)=>`<span class="tag ${cls}">${t}</span>`;
   let html="";
   if(type==="under16"){html=T("tag-no","16歳未満")+"所得税の扶養控除はありません（住民税のため申告書に記入）。";}
   else if(type==="spouse"){
-    if(shotoku<=580000)html=T("tag-ok","配偶者控除の対象")+"給与収入123万円以下。あなたの所得により最大38万円（70歳以上は48万円）。";
-    else if(shotoku<=1330000)html=T("tag-sp","配偶者特別控除の対象")+"給与収入123万円超。控除額は所得に応じて段階的（②の概算ツールで確認できます）。";
-    else html=T("tag-no","対象外")+"配偶者の合計所得が133万円を超えています。";
+    if(shotoku<=FUYO_LIMIT)html=T("tag-ok","配偶者控除の対象")+"給与収入136万円以下。あなたの所得により最大38万円（70歳以上は48万円）。";
+    else if(shotoku<=1330000)html=T("tag-sp","配偶者特別控除の対象")+"給与収入136万円超〜207万円以下。控除額は所得に応じて段階的（②の概算ツールで確認できます）。";
+    else html=T("tag-no","対象外")+"配偶者の合計所得が133万円（給与収入207万円）を超えています。";
   }else if(type==="college"){
-    if(shotoku<=580000)html=T("tag-ok","特定扶養親族（扶養控除63万円）")+"給与収入123万円以下。①の扶養控除等申告書の「特定扶養」に✓。";
-    else if(shotoku<=1230000)html=T("tag-sp","特定親族特別控除の対象")+"給与収入123万円超〜188万円以下。概算控除額：<b>"+yen(tss(shotoku))+"</b>（②の特定親族特別控除欄へ）。";
-    else html=T("tag-no","対象外")+"合計所得が123万円を超えています。";
+    if(shotoku<=FUYO_LIMIT)html=T("tag-ok","特定扶養親族（扶養控除63万円）")+"給与収入136万円以下。①の扶養控除等申告書の「特定扶養」に✓。";
+    else if(shotoku<=1230000)html=T("tag-sp","特定親族特別控除の対象")+"給与収入136万円超〜197万円以下。概算控除額：<b>"+yen(tss(shotoku))+"</b>（②の特定親族特別控除欄へ）。";
+    else html=T("tag-no","対象外")+"合計所得が123万円（給与収入197万円）を超えています。";
   }else{
-    if(shotoku<=580000)html=T("tag-ok","扶養親族の対象")+"給与収入123万円以下。年齢区分により控除額が異なります（一般38万円など）。";
-    else html=T("tag-no","対象外")+"合計所得が58万円（給与123万円）を超えています。";
+    if(shotoku<=FUYO_LIMIT)html=T("tag-ok","扶養親族の対象")+"給与収入136万円以下。年齢区分により控除額が異なります（一般38万円など）。";
+    else html=T("tag-no","対象外")+"合計所得が62万円（給与収入136万円）を超えています。";
   }
   $("#fz-judge").innerHTML=html;
 }
@@ -618,26 +688,16 @@ function simKihon(){
   const myInc=num($("#kb-me").value),spInc=num($("#kb-sp").value),elderly=$("#kb-age").value==="old";
   const my=kShotoku(myInc),sp=kShotoku(spInc);
   const kiso=kisoKojo(my),haigu=haiguControl(sp,my,elderly);
-  $("#kb-my-shotoku").textContent=yen(my)+"（約"+(my/10000)+"万円）";
+  $("#kb-my-shotoku").textContent=yen(my)+"（約"+man(my)+"万円）";
   $("#kb-kiso").textContent=yen(kiso);
   $("#kb-haigu").textContent=yen(haigu);
   const T=(cls,t)=>`<span class="tag ${cls}">${t}</span>`;
   let j="";
   if(honninTier(my)<0)j=T("tag-no","配偶者控除なし")+"あなたの合計所得が1,000万円を超えています。";
-  else if(haigu>0&&sp<=580000)j=T("tag-ok","配偶者控除")+"配偶者の給与収入は123万円以下。";
-  else if(haigu>0)j=T("tag-sp","配偶者特別控除")+"配偶者の収入に応じた段階的な控除です。";
-  else j=T("tag-no","配偶者（特別）控除なし")+"配偶者の合計所得が133万円超または対象外です。";
+  else if(haigu>0&&sp<=FUYO_LIMIT)j=T("tag-ok","配偶者控除")+"配偶者の給与収入は136万円以下。";
+  else if(haigu>0)j=T("tag-sp","配偶者特別控除")+"配偶者の収入に応じた段階的な控除です（給与収入136万円超〜207万円以下）。";
+  else j=T("tag-no","配偶者（特別）控除なし")+"配偶者の合計所得が133万円（給与収入207万円）超または対象外です。";
   $("#kb-judge").innerHTML=j;
-}
-
-function simHoken(){
-  const gN=num($("#h-genN").value),gO=num($("#h-genO").value),care=num($("#h-care").value),
-        pN=num($("#h-penN").value),pO=num($("#h-penO").value),eq=num($("#h-eq").value),lg=num($("#h-long").value);
-  const life=Math.min(sCat(gN,gO)+sN(care)+sCat(pN,pO),120000);
-  const jishin=jishinKojo(eq,lg);
-  $("#h-life").textContent=yen(life);
-  $("#h-jishin").textContent=yen(jishin);
-  $("#h-total").textContent=yen(life+jishin);
 }
 
 function simJutaku(){
@@ -649,6 +709,210 @@ function simJutaku(){
   $("#j-amt").textContent=yen(Math.floor(base*rate/100)*100);
 }
 
+/* ===== 実物の様式＋タップで記載例 =====
+   box = [left%, top%, width%, height%]（画像に対する割合）。who: all=全員 / some=該当者 / co=会社が記入
+   記載例の人物：記入 太郎（本人・給与650万）／花子（妻・パート130万）／一郎（子・20歳・大学生）／次郎（子・10歳） */
+const NTA_FORM="https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/pdf/";
+const FORMS={
+  form1:{title:"令和8年分 給与所得者の扶養控除等（異動）申告書",sub:"国税庁の様式（表面）",img:"forms/f1.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_01.pdf",
+    patterns:{single:["me"],spouse:["me","a","inc"],dual:["me","b","u16","d"],u16:["me","u16"],kids:["me","b","tok","inc"],parent:["me","b","tok","inc"],solo:["me","c","b","u16"],disab:["me","c"]},
+    spots:[
+      {id:"co",n:"社",co:true,box:[12.3,5.3,27,13.7],label:"給与の支払者（会社）の欄",who:"co",desc:"会社名・法人番号・所在地は会社側で記載します。空欄のままで大丈夫です。左端の「税務署長・市区町村長」も会社が書きます。"},
+      {id:"me",n:"1",box:[39.3,5.3,35,13.7],label:"あなたの氏名・住所・生年月日など",who:"all",
+        ex:[["フリガナ","キニュウ タロウ"],["あなたの氏名","記入 太郎"],["あなたの個人番号","会社の案内どおりに（空欄の指示なら書かない）"],["あなたの住所","東京都○○区△△町1-2-3"],["生年月日","昭和60年5月10日（元号に○）"],["世帯主の氏名／続柄","記入 太郎／本人"],["配偶者の有無","有 に○"]],
+        desc:"全員が記入する欄です。「配偶者の有無」は、扶養していなくても配偶者がいれば「有」に○をします。",note:"マイナンバー（個人番号）は会社の指示に従ってください。会社が別途管理している場合は記入不要のことがあります。"},
+      {id:"sub",n:"2",box:[83,5.3,6.5,13.7],label:"従たる給与についての申告書の提出",who:"some",
+        ex:[["通常","空欄"],["2か所以上から給与があり、他社に『従たる給与についての扶養控除等申告書』を出している","○"]],
+        desc:"ほとんどの人は空欄です。この申告書は1か所にしか出せないので、副業先には出しません。"},
+      {id:"a",n:"3",box:[5.4,27.5,83.9,5.7],label:"A 源泉控除対象配偶者",who:"some",
+        ex:[["フリガナ／氏名","キニュウ ハナコ／記入 花子"],["個人番号","会社の案内どおり"],["あなたとの続柄／生年月日","妻／昭和62年8月3日"],["令和8年中の所得の見積額","560,000 円（パート収入130万円の場合）"],["住所又は居所","同上（同居なら「同上」でOK）"]],
+        desc:"配偶者の令和8年中の合計所得の見積額が95万円以下（給与収入169万円以下）で、あなた自身の所得が900万円以下（給与収入1,095万円以下）なら記入します。",
+        note:"「所得」は収入そのものではありません。給与収入130万円なら 130万 − 74万（給与所得控除）＝ 56万円 が所得です。②タブの概算ツールで計算できます。"},
+      {id:"b",n:"4",box:[5.4,33.2,36.6,27],label:"B 源泉控除対象親族（16歳以上）",who:"some",
+        ex:[["フリガナ／氏名","キニュウ イチロウ／記入 一郎"],["個人番号","会社の案内どおり"],["あなたとの続柄／生年月日","子／平成18年4月15日"],["住所又は居所","同上"]],
+        desc:"16歳以上（平成23年1月1日以前生まれ）で、令和8年中の合計所得の見積額が62万円以下（給与収入136万円以下）の親族を1人1行で記入。子・親・祖父母など。別居の親でも生活費を送っていれば対象です。",
+        note:"19〜22歳で所得62万円超100万円以下（給与136万円超174万円以下）の子は「特定親族」としてここにも記入し、控除額は②の『特定親族特別控除申告書』で計算します。"},
+      {id:"tok",n:"5",box:[42,33.2,7.6,27],label:"同居老親等／特定扶養親族・特定親族のチェック",who:"some",
+        ex:[["19〜22歳の子（平成16年1月2日〜平成20年1月1日生）で所得62万円以下","☑ 特定扶養親族"],["同じ年齢で所得62万円超100万円以下","☑ 特定親族"],["70歳以上の親（昭和32年1月1日以前生）と同居","☑ 同居老親等"]],
+        desc:"大学生の子（19〜22歳）がいる人は忘れずに。『特定扶養親族』に✓すると控除額が38万円→63万円に増えます。",note:"「特定親族」は扶養親族ではないので、あなたの障害者控除の対象にはなりません（様式の注2）。"},
+      {id:"inc",n:"6",box:[49.6,27.5,6.6,32.7],label:"令和8年中の所得の見積額",who:"some",
+        ex:[["配偶者 花子（パート収入130万円）","560,000 円"],["子 一郎（バイト収入110万円）","360,000 円"],["収入がない人","0 円"]],
+        desc:"「収入」ではなく「所得」を書きます。給与だけなら 収入 − 給与所得控除（収入220万円以下なら74万円）。収入が74万円以下なら所得は0円です。",
+        note:"扶養親族は所得62万円（給与136万円）が上限。超える19〜22歳の子は②の特定親族特別控除（所得123万円＝給与197万円まで）へ。"},
+      {id:"nonres",n:"7",box:[56.2,27.5,12.1,32.7],label:"非居住者である親族／生計を一にする事実",who:"some",
+        ex:[["国内に住む家族","空欄"],["海外に住む家族を扶養","該当する□に✓し、送金額を記入（親族関係書類・送金関係書類が必要）"]],
+        desc:"海外在住の家族を扶養している場合だけの欄です。国内の家族なら空欄のままで大丈夫。"},
+      {id:"c",n:"8",box:[5.4,60.3,83.9,10.7],label:"C 障害者・寡婦・ひとり親・勤労学生",who:"some",
+        ex:[["該当なし","すべて空欄"],["本人が身体障害者手帳3級","☑ 障害者 → 表の「一般の障害者×本人」に✓、右の内容欄に『身体障害者手帳3級 ○年○月○日交付』"],["離婚して子を扶養している（所得500万円以下）","☑ ひとり親"]],
+        desc:"当てはまる人だけ✓。障害者は本人・配偶者・扶養親族の区分に✓し、右側の欄に手帳の種類・等級・交付日などを書きます。",note:"勤労学生は、本人の所得が89万円以下（給与収入163万円以下）の学生が対象です。"},
+      {id:"d",n:"9",box:[3.5,71.4,85.8,8.8],label:"D 他の所得者が控除を受ける扶養親族等",who:"some",
+        ex:[["通常","空欄"],["共働きで、子を妻の扶養に入れる","氏名：記入 次郎／続柄：子／控除を受ける他の所得者：記入 花子（妻）"]],
+        desc:"同じ家族を夫婦で二重に扶養にはできません。配偶者側の扶養にする子などがいる場合に、その旨を書く欄です。"},
+      {id:"u16",n:"10",box:[3.5,82,93.4,9.5],label:"住民税に関する事項：16歳未満の扶養親族",who:"some",
+        ex:[["フリガナ／氏名","キニュウ ジロウ／記入 次郎"],["個人番号","会社の案内どおり"],["続柄／生年月日","子／平成28年2月20日"],["住所又は居所","同上"],["令和8年中の所得の見積額","0 円"]],
+        desc:"16歳未満（平成23年1月2日以後生まれ）の子は所得税の扶養控除はありませんが、住民税の計算に使うため必ず記入します。"},
+      {id:"ret",n:"11",box:[3.5,91.6,93.4,6.9],label:"退職手当等を有する配偶者・扶養親族・特定親族",who:"some",
+        ex:[["通常","空欄"],["妻が今年退職金を受け取った","氏名・所得の見積額（退職所得を除く）などを記入"]],
+        desc:"家族が令和8年中に退職金をもらった場合だけの欄です（住民税では退職所得を除いて扶養を判定するため）。"}
+    ]},
+  form2:{title:"令和8年分 基礎控除申告書 兼 配偶者控除等申告書 兼 特定親族特別控除申告書 兼 所得金額調整控除申告書",sub:"国税庁の様式（表面）",img:"forms/f2.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_06.pdf",
+    spots:[
+      {id:"co",n:"社",co:true,box:[6.5,6.5,36,9.2],label:"給与の支払者（会社）の欄",who:"co",desc:"会社側で記載します。空欄でOK。"},
+      {id:"me",n:"1",box:[42.4,6.5,35.3,9.2],label:"あなたの氏名・住所",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"全員が記入します。"},
+      {id:"myinc",n:"2",box:[7,20.2,31,16.4],label:"基礎控除：あなたの本年中の合計所得金額の見積額",who:"all",
+        ex:[["(1) 給与所得 収入金額","6,500,000 円（賞与込みの年収見込み）"],["(1) 所得金額","4,760,000 円（6,500,000 − 給与所得控除 1,740,000）"],["(2) 給与所得以外の所得","0 円"],["合計所得金額の見積額","4,760,000 円"]],
+        desc:"今年1年の給与収入（額面・賞与込み）の見込みを書き、裏面の表で所得金額に直します。②タブ下の概算ツールでも計算できます。",
+        note:"収入660万円未満は正確には『所得税法別表第五』で求めるため、概算ツールと数千円ずれることがあります。最終的な計算は会社が行います。"},
+      {id:"kiso",n:"3",box:[7,37,31,22.6],label:"基礎控除：控除額の計算（判定・区分Ⅰ・基礎控除の額）",who:"all",
+        ex:[["判定","☑ 489万円以下"],["区分Ⅰ","A"],["基礎控除の額","1,040,000 円"]],
+        desc:"合計所得の見積額が当てはまる行に✓し、右の金額を『基礎控除の額』に転記。令和8年分は 489万円以下→104万円、655万円以下→67万円、2,350万円以下→62万円。区分Ⅰは所得900万円以下ならA、950万円以下B、1,000万円以下C。",
+        note:"区分Ⅰは配偶者控除の判定に使います。所得1,000万円超の人は区分なし＝配偶者控除・配偶者特別控除は受けられません。"},
+      {id:"sp",n:"4",box:[39.4,20.2,53.7,11.3],label:"配偶者控除等：配偶者の氏名等",who:"some",
+        ex:[["フリガナ／氏名","キニュウ ハナコ／記入 花子"],["個人番号","会社の案内どおり"],["生年月日","昭和62年8月3日"],["住所が異なる場合の住所","同居なら空欄"]],
+        desc:"配偶者控除・配偶者特別控除を受ける人だけ記入します（あなたの所得が1,000万円超なら対象外）。"},
+      {id:"spinc",n:"5",box:[39.4,31.7,53.7,14.3],label:"配偶者の合計所得金額の見積額の計算・判定（区分Ⅱ）",who:"some",
+        ex:[["(1) 給与所得 収入金額","1,300,000 円（パート年収見込み）"],["(1) 所得金額","560,000 円（1,300,000 − 740,000）"],["合計所得金額の見積額","560,000 円"],["判定","☑ 62万円以下かつ年齢70歳未満 → 区分Ⅱ ②"]],
+        desc:"配偶者の年収見込みから所得を計算し、①〜④の当てはまる区分に✓。62万円以下（給与136万円以下）なら配偶者控除（①②）、62万円超133万円以下（給与207万円以下）なら配偶者特別控除（③④）です。"},
+      {id:"spamt",n:"6",box:[39.4,46.3,53.7,14.4],label:"配偶者控除等：控除額の計算",who:"some",
+        ex:[["表の 区分Ⅰ A × 区分Ⅱ ②","380,000 円"],["配偶者控除の額","380,000 円"],["配偶者特別控除の額","空欄（区分Ⅱが③④のときに記入）"]],
+        desc:"表で区分Ⅰ（縦：A〜C）と区分Ⅱ（横：①〜④）が交わる金額を転記します。①②なら『配偶者控除の額』、③④なら『配偶者特別控除の額』へ。"},
+      {id:"tss",n:"7",box:[7,62.6,86,20.4],label:"特定親族特別控除申告書",who:"some",
+        ex:[["フリガナ／氏名／続柄","キニュウ イチロウ／記入 一郎／子"],["生年月日","平成18年4月15日"],["本年中の合計所得金額の見積額","760,000 円（バイト収入150万円の場合：150万 − 74万）"],["特定親族特別控除の額","630,000 円（62万円超85万円以下の行）"]],
+        desc:"19〜22歳（平成16年1月2日〜平成20年1月1日生）で、所得62万円超123万円以下（給与収入136万円超197万円以下）の子などがいる人が記入。下の『控除額の計算』の表で金額を求めます。",
+        note:"所得が62万円以下（給与136万円以下）なら、ここではなく①の扶養控除等申告書に『特定扶養親族』（控除63万円）として記入します。所得100万円以下（給与174万円以下）の特定親族は①のBにも『特定親族』として記入します。"},
+      {id:"adj",n:"8",box:[6.5,85.5,86.9,10.3],label:"所得金額調整控除申告書",who:"some",
+        ex:[["収入850万円以下の人","空欄"],["要件","☑ 扶養親族が年齢23歳未満（平16.1.2以後生）"],["☆扶養親族等の氏名／続柄","記入 一郎／子"],["生年月日／所得の見積額","平成18年4月15日／360,000 円"]],
+        desc:"給与収入850万円超の人だけが対象。23歳未満の扶養親族がいる、または本人・配偶者・扶養親族が特別障害者、のどれかに当てはまれば記入します。"}
+    ]},
+  form3:{title:"令和8年分 給与所得者の保険料控除申告書",sub:"国税庁の様式（表面）",img:"forms/f3.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_04.pdf",
+    spots:[
+      {id:"co",n:"社",co:true,box:[6.5,6.5,40,12.2],label:"給与の支払者（会社）の欄",who:"co",desc:"会社側で記載します。空欄でOK。"},
+      {id:"me",n:"1",box:[46.7,6.5,37,12.2],label:"あなたの氏名・住所",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"全員が記入します。"},
+      {id:"life",n:"2",box:[5.9,24,49.1,22.9],label:"一般の生命保険料",who:"some",
+        ex:[["保険会社等の名称","○○生命"],["保険等の種類","終身"],["保険期間","終身"],["契約者の氏名","記入 太郎"],["受取人の氏名／続柄","記入 花子／妻"],["新・旧の区分","新 に○（平成24年1月1日以後の契約）"],["(a) 本年中に支払った金額","80,000 円（証明書の『申告額』）"],["A（新保険料の合計）→ ①","80,000 円 → 40,000 円（計算式Ⅰ）"]],
+        desc:"控除証明書を見ながら1契約1行で記入します。金額は証明書の『証明額』ではなく『申告額（12月まで払う見込み額）』。新・旧は証明書に書いてあります。",
+        note:"新契約の合計はA、旧契約の合計はBに書き、計算式Ⅰ（新）・Ⅲ（旧）で控除額を出します。両方ある場合は③と④の大きい方が㋑です。"},
+      {id:"u23",n:"3",box:[7.3,40,13.8,3.4],label:"年齢23歳未満の扶養親族の有無",who:"some",
+        ex:[["23歳未満の扶養親族（子など）がいる","有 に○ → Aを計算式Ⅱ（上限6万円）で計算して②に記入"],["いない","無 に○ → 計算式Ⅰ（上限4万円）で①に記入"]],
+        desc:"令和8年分からの新しい欄です。23歳未満の扶養親族がいる人は、一般生命保険料（新契約）の控除上限が4万円→6万円になります。「有」に○をしたら、下の☆欄にその扶養親族の氏名等も記入します。"},
+      {id:"care",n:"4",box:[5.9,47,49.1,13.7],label:"介護医療保険料",who:"some",
+        ex:[["保険会社等の名称","○○生命"],["保険等の種類","医療"],["保険期間","終身"],["契約者／受取人","記入 太郎／記入 太郎（本人）"],["(a) 支払った金額","35,000 円"],["C → ㋺","35,000 円 → 27,500 円（計算式Ⅰ）"]],
+        desc:"医療保険・がん保険・介護保険など（新契約のみ）。証明書に『介護医療保険料』と区分されている金額を書きます。"},
+      {id:"pen",n:"5",box:[5.9,60.7,49.1,18.3],label:"個人年金保険料",who:"some",
+        ex:[["保険会社等の名称","△△生命"],["保険等の種類／保険期間","個人年金／10年"],["支払開始日","令和32年5月1日"],["契約者／受取人","記入 太郎／記入 太郎（本人）"],["新・旧の区分","旧 に○（平成23年12月31日以前の契約）"],["(a) 支払った金額","60,000 円"],["E（旧）→ ⑦","60,000 円 → 40,000 円（計算式Ⅲ）"]],
+        desc:"『個人年金保険料税制適格特約』が付いた年金保険だけが対象です。証明書に『個人年金』の区分があります。"},
+      {id:"star",n:"6",box:[5.9,79,49.1,6.8],label:"☆23歳未満の扶養親族の氏名等／生命保険料控除額 計",who:"some",
+        ex:[["☆ 氏名／個人番号／生年月日／続柄","記入 一郎／会社の案内どおり／平成18年4月15日／子（「有」に○をした人のみ）"],["生命保険料控除額 計（㋑＋㋺＋㋩）","40,000 ＋ 27,500 ＋ 40,000 ＝ 107,500 円（最高120,000円）"]],
+        desc:"3区分の控除額を合計します（上限12万円）。③タブ下の概算ツールの金額と照合できます。"},
+      {id:"calc",n:"7",box:[5.9,85.9,49.1,10.7],label:"計算式Ⅰ・Ⅱ・Ⅲ",who:"all",
+        ex:[["新 80,000円（計算式Ⅰ）","80,000 × 1/4 ＋ 20,000 ＝ 40,000 円"],["新 80,000円（計算式Ⅱ：23歳未満の扶養親族あり）","80,000 × 1/4 ＋ 30,000 ＝ 50,000 円"],["旧 60,000円（計算式Ⅲ）","60,000 × 1/4 ＋ 25,000 ＝ 40,000 円"]],
+        desc:"A・C・D（新契約）は計算式Ⅰ、23歳未満の扶養親族がいる人のA（一般・新）は計算式Ⅱ、B・E（旧契約）は計算式Ⅲ。1円未満の端数は切り上げです。"},
+      {id:"eq",n:"8",box:[55.9,19.5,38,36.6],label:"地震保険料控除",who:"some",
+        ex:[["保険会社等の名称","□□損保"],["保険等の種類（目的）","地震（建物）"],["保険期間","1年"],["契約者の氏名","記入 太郎"],["家屋等に居住している者の氏名／続柄","記入 太郎／本人"],["区分","地震 に○"],["Ⓐ 支払った金額","24,000 円"],["Ⓑ 地震保険料の合計 → 控除額","24,000 円 → 24,000 円（最高50,000円）"]],
+        desc:"地震保険の控除証明書の金額を記入します（火災保険部分は対象外）。平成18年末までに契約した満期返戻金のある長期の損害保険は『旧長期』に○（最高15,000円）。"},
+      {id:"soc",n:"9",box:[55.9,57.3,38,14.5],label:"社会保険料控除",who:"some",
+        ex:[["社会保険の種類","国民年金保険料"],["保険料支払先の名称","日本年金機構"],["保険料を負担することになっている人の氏名／続柄","記入 一郎／子"],["本年中に支払った保険料の金額","200,000 円（控除証明書の額）"]],
+        desc:"給与天引き以外で自分が払った国民年金・国民健康保険・国民年金基金など。大学生の子の国民年金を親が払った場合も対象です。",
+        note:"国民年金・国民年金基金は『社会保険料（国民年金保険料）控除証明書』の添付が必要です。国民健康保険は証明書不要（金額がわかればOK）。"},
+      {id:"ideco",n:"10",box:[55.9,72.9,38,23.7],label:"小規模企業共済等掛金控除",who:"some",
+        ex:[["確定拠出年金法に規定する個人型年金加入者掛金（iDeCo）","276,000 円"],["合計（控除額）","276,000 円"]],
+        desc:"iDeCo（個人型）は『小規模企業共済等掛金払込証明書』の金額を記入します。給与天引きの企業型DCやiDeCoは会社が把握しているので書きません。"}
+    ]},
+  form4:{title:"令和8年分 給与所得者の住宅借入金等特別控除申告書 兼 計算明細書",sub:"税務署から届く用紙（上：申告書／下：証明書）。画像は国税庁の記載例（令和7年入居・省エネ基準適合住宅・控除率0.7%）",img:"forms/f4.webp",w:1420,h:1810,src:"https://www.nta.go.jp/publication/pamph/shotoku/jukari/01.pdf",
+    spots:[
+      {id:"co",n:"社",co:true,box:[7,7.2,49.3,9.4],label:"給与の支払者（会社）の欄",who:"co",desc:"会社名・法人番号・所在地と左端の税務署長名は会社側で記載します。"},
+      {id:"me",n:"1",box:[56.3,7.2,37.3,9.4],label:"あなたの氏名・住所・世帯主",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["世帯主の氏名・続柄","本人"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"税務署から届く用紙には氏名等が印字済みのことがあります。転居していれば現住所を記入してください。"},
+      {id:"bal",n:"2",box:[7,22.1,86.6,5.5],label:"① 住宅借入金等の年末残高（内、連帯債務による借入金の額）",who:"all",
+        ex:[["Ⓐ 住宅のみ","13,000,000 円（住宅ローンの『年末残高等証明書』の予定額）"],["Ⓑ 土地等のみ","15,000,000 円（土地ローンの証明書の予定額）"],["連帯債務なら（　）内","連帯債務による借入金の額を記入"]],
+        desc:"金融機関から届く『住宅取得資金に係る借入金の年末残高等証明書』の年末残高（予定額）を転記。住宅のみ／土地等のみ／住宅及び土地等のどの列に書くかは、証明書の「住宅借入金等の内訳」の○印どおりに。",
+        note:"証明書が2枚以上ある人は、同じ列のものは合計して書きます。連帯債務の場合は（　）内にも連帯債務分の額を記入します。"},
+      {id:"calc",n:"3",box:[7,27.6,86.6,12.2],label:"②〜④ 年末残高・取得対価との比較・居住用割合",who:"all",
+        ex:[["② 単独債務の額＋連帯債務の額×連帯債務割合","13,000,000／15,000,000 円（単独債務なら①と同じ）"],["③ ②と証明事項の取得対価の額（㋺㋭）の少ない方","13,000,000／15,000,000 円"],["④ ③×居住用割合（㋩㋬）","100.0％ → 13,000,000／15,000,000 円"]],
+        desc:"下の証明書（証明事項）に印字された取得対価の額・居住用割合・連帯債務割合を使って順に計算します。単独債務・全部居住用なら①の金額がそのまま④まで下りてきます。"},
+      {id:"base",n:"4",box:[7,39.8,40.8,5],label:"⑤ 住宅借入金等の年末残高等（④の欄の合計額）",who:"all",
+        ex:[["⑤","28,000,000 円（13,000,000＋15,000,000。最高3,000万円）"]],
+        desc:"Ⓐ〜Ⓓの④を合計。カッコ内の『最高○万円』（借入限度額）を超えるときは限度額を書きます。限度額は入居年・住宅の区分で異なり、用紙に印字されています。"},
+      {id:"inc",n:"5",box:[47.9,39.8,31,5],label:"年間所得の見積額",who:"all",
+        ex:[["年間所得の見積額","6,000,000 円（記載例）／給与収入650万円なら 4,760,000 円"]],
+        desc:"合計所得金額の見積り（収入ではなく所得）。②基礎控除申告書に書いた額と同じでOK。2,000万円を超える年は控除を受けられません。"},
+      {id:"amt",n:"6",box:[7,44.8,40.8,5.5],label:"⑥ 住宅借入金等特別控除額（⑤×0.7%）",who:"all",
+        ex:[["⑥ ＝ ⑤ × 0.7％（100円未満切捨て）","28,000,000 × 0.7％ ＝ 196,000 円（最高 210,000 円）"]],
+        desc:"⑤に控除率を掛けた額。控除率と各年の控除限度額は用紙に印字されています。④タブ下の概算ツールでも計算できます。"},
+      {id:"dup",n:"7",box:[47.9,44.8,45.8,5.5],label:"重複適用を受ける場合の（特定増改築等）住宅借入金等特別控除額",who:"some",ex:[["通常","空欄"]],desc:"新築・購入のローンと増改築のローンの両方で控除を受ける人だけが記入する欄です。"},
+      {id:"memo",n:"8",box:[7,50.6,86.6,5.2],label:"備考（連帯債務の場合）",who:"some",
+        ex:[["単独で借りている","空欄"],["夫婦の連帯債務","『私は連帯債務者として、右上の住宅借入金等の残高○○円のうち、○○円を負担することとしています。』＋連帯債務者の住所・氏名・勤務先"]],
+        desc:"連帯債務で借りている場合だけ記入。負担割合は初年度の確定申告と同じにします。"},
+      {id:"cert",n:"9",box:[7,60.2,86.6,21.5],label:"年末調整のための住宅借入金等特別控除証明書（税務署発行）",who:"co",
+        ex:[["この部分","印字済み。あなたが書く欄はありません"]],
+        desc:"用紙の下半分は税務署が発行した証明書です。初年度の確定申告の内容（居住開始日・取得対価・居住用割合・連帯債務割合など）が印字されています。切り離さず、上の申告書と一体のまま会社に提出します。"},
+      {id:"items",n:"10",box:[7,81.7,86.6,16],label:"証明事項（取得対価の額・居住用割合・連帯債務割合・年末残高の上限）",who:"all",
+        ex:[["㋺ 家屋の取得対価の額","15,000,000 円 → ③の計算に使う"],["㋩ 居住用割合","100.0％ → ④の計算に使う"],["㋭ 土地等の取得対価等の額","16,000,000 円"],["（参考）適用初年分の控除額","205,000 円（目安。各年の控除額はこれを上回りません）"]],
+        desc:"申告書の②〜④を計算するときに使う数字が印字されています。『住宅の区分等』（省エネ基準適合住宅など）で借入限度額と控除期間が決まります。"}
+    ]}
+};
+const WHO={all:["who-all","全員が記入"],some:["who-some","該当する人だけ記入"],co:["who-co","会社が記入（あなたは書かない）"]};
+let sheetKey=null,sheetIdx=0;
+function renderForms(){
+  Object.entries(FORMS).forEach(([key,f])=>{
+    const box=$("#fimg-"+key);if(!box)return;
+    box.innerHTML=`<div class="fimg-head"><div class="fimg-title">${esc(f.title)}<small>${esc(f.sub)}</small></div>
+      <div class="fimg-tools"><span class="fimg-hint" style="margin:0">表示</span>${[100,160,240].map((z,i)=>`<button class="zbtn" data-z="${z}" aria-pressed="${i===0}">${z===100?"全体":z+"%"}</button>`).join("")}</div></div>
+      <div class="fimg-scroll${f.h>f.w?" tall":""}"><div class="fimg"><img src="${f.img}" width="${f.w}" height="${f.h}" alt="${esc(f.title)}" loading="lazy" decoding="async">
+      ${f.spots.map((s,i)=>`<button class="hs${s.co?" co":""}" data-i="${i}" style="left:${s.box[0]}%;top:${s.box[1]}%;width:${s.box[2]}%;height:${s.box[3]}%" aria-label="${esc(s.label)}の記載例を見る"><span class="hn">${esc(s.n)}</span></button>`).join("")}</div></div>
+      <p class="fimg-hint">番号の枠を<b>タップすると記載例と書き方</b>が出ます。「160%／240%」で拡大して、横にスクロールして見られます。</p>
+      <p class="fimg-src">出典：<a href="${f.src}" target="_blank" rel="noopener">国税庁（令和8年分）</a></p>`;
+    const fimg=box.querySelector(".fimg"),scroll=box.querySelector(".fimg-scroll");
+    const setZoom=(b,keepPos)=>{
+      const z=+b.dataset.z;const ratio=keepPos?scroll.scrollLeft/Math.max(1,fimg.offsetWidth):0;
+      fimg.style.width=z+"%";scroll.classList.toggle("zoomed",z>100);box.querySelectorAll(".zbtn").forEach(x=>x.setAttribute("aria-pressed",x===b));
+      requestAnimationFrame(()=>{scroll.scrollLeft=ratio*fimg.offsetWidth;});
+    };
+    box.querySelectorAll(".zbtn").forEach(b=>b.addEventListener("click",()=>setZoom(b,true)));
+    // スマホ幅では横長の様式は最初から160%で表示（番号が重ならないように）。縦長（住宅ローン）は全体表示のまま
+    if(window.innerWidth<600&&f.w>f.h)setZoom(box.querySelector('.zbtn[data-z="160"]'),false);
+    box.querySelectorAll(".hs").forEach(h=>h.addEventListener("click",()=>openSheet(key,+h.dataset.i)));
+    const list=$("#spots-"+key);
+    if(list){
+      list.innerHTML=f.spots.map((s,i)=>`<li data-i="${i}" data-id="${s.id}"><span class="hot${s.co?" co":""}">${esc(s.n)}</span><div class="t"><b>${esc(s.label)}</b><small>${WHO[s.who][1]}</small></div></li>`).join("");
+      list.querySelectorAll("li").forEach(li=>li.addEventListener("click",()=>openSheet(key,+li.dataset.i)));
+    }
+  });
+  $("#sheet-x").addEventListener("click",closeSheet);
+  $("#sheet-bg").addEventListener("click",closeSheet);
+  $("#sheet-prev").addEventListener("click",()=>openSheet(sheetKey,sheetIdx-1));
+  $("#sheet-next").addEventListener("click",()=>openSheet(sheetKey,sheetIdx+1));
+  document.addEventListener("keydown",e=>{if(!sheetKey)return;if(e.key==="Escape")closeSheet();if(e.key==="ArrowRight")openSheet(sheetKey,sheetIdx+1);if(e.key==="ArrowLeft")openSheet(sheetKey,sheetIdx-1);});
+}
+function applyPattern(key,p){
+  const f=FORMS[key];if(!f||!f.patterns)return;const on=f.patterns[p]||[];
+  const box=$("#fimg-"+key),list=$("#spots-"+key);
+  f.spots.forEach((s,i)=>{
+    const hit=on.includes(s.id);
+    const h=box&&box.querySelector(`.hs[data-i="${i}"]`);if(h){h.classList.toggle("on",hit);h.classList.toggle("dim",!hit);}
+    const li=list&&list.querySelector(`li[data-i="${i}"]`);if(li)li.classList.toggle("dim",!hit);
+  });
+}
+function openSheet(key,i){
+  const f=FORMS[key];if(!f)return;if(i<0||i>=f.spots.length)return;
+  sheetKey=key;sheetIdx=i;const s=f.spots[i];
+  $("#sheet-n").textContent=s.n;$("#sheet-n").className="hot"+(s.co?" co":"");$("#sheet-n").style.background=s.co?"var(--ink2)":"";
+  $("#sheet-title").textContent=s.label;
+  const w=WHO[s.who];
+  $("#sheet-b").innerHTML=`<span class="who ${w[0]}">${w[1]}</span>`
+    +(s.ex?`<div class="ex"><div class="exl">記載例</div><div class="exv">${s.ex.map(([l,v])=>`<span class="ln"><span class="lb">${esc(l)}</span>${esc(v)}</span>`).join("")}</div></div>`:"")
+    +`<div>${esc(s.desc)}</div>`+(s.note?`<div class="note"><b>注意</b>　${esc(s.note)}</div>`:"");
+  $("#sheet-pos").textContent=`${i+1} / ${f.spots.length}`;
+  $("#sheet-prev").disabled=i===0;$("#sheet-next").disabled=i===f.spots.length-1;
+  $("#sheet-b").scrollTop=0;
+  $("#sheet").classList.add("open");$("#sheet").setAttribute("aria-hidden","false");$("#sheet-bg").classList.add("open");
+  document.body.style.overflow="hidden";
+  const h=document.querySelector(`#fimg-${key} .hs[data-i="${i}"]`);
+  if(h){document.querySelectorAll(`#fimg-${key} .hs.focus`).forEach(x=>x.classList.remove("focus"));h.classList.add("focus");h.scrollIntoView({block:"nearest",inline:"nearest",behavior:"smooth"});}
+}
+function closeSheet(){
+  sheetKey=null;$("#sheet").classList.remove("open");$("#sheet").setAttribute("aria-hidden","true");$("#sheet-bg").classList.remove("open");document.body.style.overflow="";
+}
+
 /* ===== Q&A ===== */
 const QA_SEED=[
   {q:"年末調整とは、そもそも何をするものですか？",a:"毎月の給与から「仮」で引かれている所得税を、1年間の正しい税額に精算する手続きです。控除を申告することで払い過ぎなら還付、不足なら追加徴収されます。",c:"全般"},
@@ -656,7 +920,9 @@ const QA_SEED=[
   {q:"今年の途中で入社しました。前職の源泉徴収票は必要ですか？",a:"必要です。前職分の給与を合算して年末調整を行います。お手元にない場合は前の勤務先へ早めに再発行を依頼してください。",c:"手続き・期限"},
   {q:"生命保険料控除の証明書をなくしてしまいました。",a:"保険会社に連絡すると再発行してもらえます（ハガキ／Web）。間に合わない場合は総務へご相談ください。",c:"保険料"},
   {q:"配偶者がパートで働いています。配偶者控除は受けられますか？",a:"配偶者の年収（所得）とあなたの所得で受けられるか・控除額が決まります。②タブの「基礎控除・配偶者控除 概算ツール」で試算できます。",c:"扶養・配偶者"},
-  {q:"大学生の子（20歳）がアルバイトをしています。控除はありますか？",a:"19〜22歳の親族は、令和7年に新設された「特定親族特別控除」の対象になる場合があります（合計所得58万円超123万円以下など）。①タブの扶養判定ツールで概算できます。",c:"扶養・配偶者"},
+  {q:"大学生の子（20歳）がアルバイトをしています。控除はありますか？",a:"給与収入136万円以下なら「特定扶養親族」として扶養控除63万円の対象です。それを超えても、19〜22歳の親族は令和7年に新設された「特定親族特別控除」の対象になる場合があります（令和8年分は合計所得62万円超123万円以下＝給与収入136万円超197万円以下）。①タブの扶養判定ツールで概算できます。",c:"扶養・配偶者"},
+  {q:"令和8年分で変わったことは何ですか？（年収の壁）",a:"令和8年度税制改正で、令和8年分から（1）基礎控除の引上げ（合計所得489万円以下は104万円、655万円以下は67万円、2,350万円以下は62万円）、（2）給与所得控除の最低額の引上げ（65万円→74万円）、（3）扶養親族・配偶者の所得要件の引上げ（58万円→62万円。給与収入では123万円→136万円）、（4）23歳未満の扶養親族がいる人の一般生命保険料控除の上限引上げ（4万円→6万円）が適用されます。所得税がかからない給与収入の目安は約178万円になりました。年末調整で1年分をまとめて精算するため、12月の還付額が大きくなる人もいます。",c:"全般"},
+  {q:"子どもがいると生命保険料控除が増えると聞きました。",a:"令和8年分から、その年の12月31日時点で23歳未満の扶養親族がいる人は、一般生命保険料（平成24年以降の新契約）の控除上限が4万円から6万円に上がります（旧契約のみの場合は5万円のまま。3区分合計の上限12万円は変わりません）。③タブの保険料控除申告書で該当する旨を記入してください。概算ツールで試算できます。",c:"保険料"},
   {q:"ふるさと納税は年末調整でできますか？",a:"年末調整ではできません。ワンストップ特例（自治体へ申請）か、確定申告で手続きします。",c:"その他"},
   {q:"医療費控除は年末調整でできますか？",a:"医療費控除は年末調整の対象外で、ご自身の確定申告が必要です。領収書や明細を保管しておいてください。",c:"その他"},
   {q:"iDeCo（イデコ）の掛金は申告できますか？",a:"「小規模企業共済等掛金控除」として③タブの保険料控除申告書で申告できます。『小規模企業共済等掛金払込証明書』を添付してください。",c:"保険料"},
@@ -707,13 +973,13 @@ function applyConfig(){
 /* ===== INIT ===== */
 applyConfig();
 initTabs();
+renderForms();
 initPatternTabs();
 renderChecklist();
 renderChips();
 $("#qa-search").addEventListener("input",e=>{term=e.target.value;renderQA();});
 bind(["fz-type","fz-income"],simFuyo);
 bind(["kb-me","kb-sp","kb-age"],simKihon);
-bind(["h-genN","h-genO","h-care","h-penN","h-penO","h-eq","h-long"],simHoken);
 bind(["j-rate","j-bal","j-share","j-cost"],simJutaku);
 loadQA();
 </script>

@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>保険料控除 計算ツール（令和8年分）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F4EEDD; --card:#FFFDF6; --ink:#22303C; --ink2:#54616C; --ink3:#8A9399;
+  --shu:#C8462C; --shu2:#A83820; --shu-wash:#F3DCD2;
+  --ok:#2F7A57; --ok-wash:#DBEDE2; --warn:#B8791A; --warn-wash:#F6E9CC;
+  --blue:#23489a; --blue-wash:#E6ECF8;
+  --line:#D9CFB4; --line2:#C7BB9A; --r:16px;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:"Zen Kaku Gothic New",system-ui,sans-serif; font-size:16px; line-height:1.7;
+  padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif; line-height:1.35; margin:0}
+button,input,select{font:inherit; color:inherit}
+.wrap{max-width:560px; margin:0 auto; padding:0 14px}
+
+/* header */
+.top{position:sticky; top:0; z-index:20; background:rgba(244,238,221,.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
+.top .wrap{display:flex; align-items:center; gap:10px; padding:10px 14px}
+.back{text-decoration:none; color:var(--shu2); font-weight:700; font-size:13px; white-space:nowrap; padding:6px 10px; border-radius:999px; background:var(--shu-wash)}
+.top h1{font-size:16px; font-weight:900; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.yr{font-size:11px; color:#fff; background:var(--ink); padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap}
+
+.lead{padding:16px 0 4px}
+.lead p{margin:6px 0 0; font-size:14px; color:var(--ink2)}
+.lead .big{font-family:"Zen Maru Gothic"; font-weight:900; font-size:22px; color:var(--ink)}
+.steps{font-size:12.5px; color:var(--ink2); background:var(--card); border:1px dashed var(--line2); border-radius:12px; padding:10px 13px; margin-top:12px}
+.steps b{color:var(--shu2)}
+
+/* cards */
+.card{background:var(--card); border:1.5px solid var(--line2); border-radius:var(--r); padding:16px 15px; margin:14px 0; box-shadow:0 1px 0 #fff inset, 0 10px 28px -18px rgba(34,48,60,.35)}
+.card-h{display:flex; align-items:center; gap:10px; margin-bottom:6px}
+.stepno{flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--shu); color:#fff; display:grid; place-items:center; font-family:"Zen Maru Gothic"; font-weight:900; font-size:14px}
+.card-h h2{font-size:17px; font-weight:900}
+.card-h .opt{margin-left:auto; font-size:11px; color:var(--ink2); border:1px solid var(--line2); border-radius:999px; padding:1px 8px; white-space:nowrap}
+.card p.sub{margin:0 0 12px; font-size:13.5px; color:var(--ink2)}
+.hint{font-size:12.5px; color:var(--ink2); background:var(--blue-wash); border-radius:10px; padding:9px 12px; margin-top:10px; line-height:1.65}
+.hint b{color:var(--blue)}
+details.more{margin-top:8px; font-size:13px}
+details.more summary{cursor:pointer; color:var(--shu2); font-weight:700; list-style:none; display:inline-flex; gap:6px; align-items:center}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::before{content:"▸"; transition:.15s}
+details.more[open] summary::before{transform:rotate(90deg)}
+details.more .body{margin-top:6px; color:var(--ink2); line-height:1.7}
+
+/* segmented control */
+.seg{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.seg.three{grid-template-columns:1fr 1fr 1fr}
+.seg button{min-height:52px; border-radius:14px; border:2px solid var(--line2); background:#fff; color:var(--ink2); font-weight:700; font-size:15px; cursor:pointer; padding:6px 8px; line-height:1.3; transition:.12s}
+.seg button small{display:block; font-weight:400; font-size:11px; color:var(--ink3)}
+.seg button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
+.seg button[aria-pressed="true"] small{color:#C8D0D8}
+.seg.sm button{min-height:42px; font-size:14px; border-radius:11px}
+
+/* money input */
+.field{margin-top:12px}
+.field label{display:block; font-size:13px; font-weight:700; color:var(--ink2); margin-bottom:5px}
+.money{display:flex; align-items:center; gap:6px; background:#fff; border:2px solid var(--line2); border-radius:14px; padding:4px 14px; transition:.12s}
+.money:focus-within{border-color:var(--shu); box-shadow:0 0 0 4px rgba(200,70,44,.12)}
+.money input{flex:1; min-width:0; border:0; outline:0; background:transparent; font-size:24px; font-weight:700; text-align:right; font-family:"Zen Maru Gothic"; padding:8px 0; color:var(--ink)}
+.money input::placeholder{color:#C9C2B0; font-weight:700}
+.money .unit{font-size:15px; color:var(--ink2); font-weight:700}
+.money .clr{border:0; background:var(--paper); width:28px; height:28px; border-radius:50%; color:var(--ink2); cursor:pointer; font-size:14px; display:grid; place-items:center; flex:0 0 auto}
+.money .clr[hidden]{display:none}
+
+/* certificate rows */
+.rows{display:flex; flex-direction:column; gap:12px}
+.row{background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:12px 12px 10px; position:relative}
+.row .rh{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+.row .rh b{font-family:"Zen Maru Gothic"; font-size:13.5px; color:var(--ink2)}
+.row .del{border:0; background:transparent; color:var(--ink3); font-size:13px; cursor:pointer; padding:4px 8px; border-radius:8px}
+.row .del:hover{background:var(--shu-wash); color:var(--shu2)}
+.row .seg{margin-top:8px}
+.row .field{margin-top:10px}
+.row .calc{font-size:12.5px; color:var(--ink2); margin-top:8px; text-align:right}
+.row .calc b{color:var(--ink); font-family:"Zen Maru Gothic"}
+.add{width:100%; margin-top:12px; min-height:50px; border-radius:14px; border:2px dashed var(--shu); background:var(--shu-wash); color:var(--shu2); font-weight:700; font-size:15px; cursor:pointer}
+.add:hover{background:#EFCFC3}
+
+/* result */
+.res-bar{position:fixed; left:0; right:0; bottom:0; z-index:30; background:var(--ink); color:#fff; box-shadow:0 -10px 30px rgba(34,48,60,.35);
+  border-radius:18px 18px 0 0; padding:0 0 env(safe-area-inset-bottom)}
+.res-bar .wrap{padding:0 14px}
+.res-top{display:flex; align-items:center; gap:10px; padding:12px 0; cursor:pointer; user-select:none}
+.res-top .lab{font-size:12px; color:#C8D0D8; line-height:1.3}
+.res-top .lab b{display:block; color:#fff; font-size:13.5px; font-family:"Zen Maru Gothic"}
+.res-top .tot{margin-left:auto; font-family:"Zen Maru Gothic"; font-weight:900; font-size:26px; color:#FFD9A8; white-space:nowrap}
+.res-top .chev{transition:.2s; color:#C8D0D8}
+.res-bar.open .res-top .chev{transform:rotate(180deg)}
+.res-body{display:none; padding:0 0 14px; max-height:60vh; overflow:auto}
+.res-bar.open .res-body{display:block}
+.res-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:7px 0; border-top:1px solid rgba(255,255,255,.12); font-size:13.5px}
+.res-row span{color:#C8D0D8} .res-row b{font-family:"Zen Maru Gothic"; font-size:17px; color:#FFD9A8; white-space:nowrap}
+.res-row.sub{font-size:12.5px; padding:3px 0 3px 14px; border-top:0} .res-row.sub b{font-size:14px; color:#fff}
+.res-note{font-size:11.5px; color:#AAB4BE; margin-top:10px; line-height:1.6}
+
+/* transfer guide */
+.tr-table{width:100%; border-collapse:collapse; font-size:13px; margin-top:8px}
+.tr-table th,.tr-table td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
+.tr-table th{font-size:11.5px; color:var(--ink2); font-weight:700; background:var(--paper)}
+.tr-table td.v{text-align:right; font-family:"Zen Maru Gothic"; font-weight:700; white-space:nowrap}
+.tr-table td .k{display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 5px; border-radius:6px; background:var(--ink); color:#fff; font-size:11.5px; font-weight:700; margin-right:5px}
+.tr-table tr.hd td{background:var(--ok-wash); font-weight:700; color:var(--ok); font-size:12px}
+.tr-table tr.zero td{color:var(--ink3)}
+.tr-table tr.zero td.v{color:var(--ink3)}
+.badge-new{font-size:10px; font-weight:700; color:#fff; background:var(--shu); padding:2px 7px; border-radius:999px; vertical-align:middle}
+.reset{display:block; margin:18px auto 0; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); border-radius:999px; padding:8px 18px; font-size:13px; cursor:pointer}
+.foot{font-size:11.5px; color:var(--ink3); margin:18px 0 0; line-height:1.7}
+.foot a{color:var(--ink3)}
+@media(min-width:720px){body{padding-bottom:40px} .res-bar{position:sticky; bottom:16px; border-radius:18px; margin:18px auto 0; max-width:560px}}
+</style>
+</head>
+<body>
+
+<header class="top"><div class="wrap">
+  <a class="back" href="./">← ガイドへ</a>
+  <h1>保険料控除 計算ツール</h1>
+  <span class="yr">令和8年分</span>
+</div></header>
+
+<main class="wrap">
+  <div class="lead">
+    <div class="big">証明書の金額を入れるだけ。</div>
+    <p>控除額と、<b>保険料控除申告書のどの欄に何を書くか</b>がわかります。入力は自動保存されます（この端末のみ）。</p>
+    <div class="steps"><b>用意するもの：</b>保険会社から届いた「保険料控除証明書」（10〜11月頃に郵送／電子）。入力するのは「<b>申告額</b>（12月まで払った場合の金額）」です。</div>
+  </div>
+
+  <!-- 1 -->
+  <section class="card" id="c-u23">
+    <div class="card-h"><span class="stepno">1</span><h2>23歳未満の扶養親族はいますか？</h2></div>
+    <p class="sub">お子さんなど、令和8年12月31日時点で<b>23歳未満</b>（平成16年1月2日以後生まれ）の扶養親族がいる人は、一般の生命保険料の控除上限が <b>4万円→6万円</b> に上がります。<span class="badge-new">令和8年分〜</span></p>
+    <div class="seg" id="seg-u23">
+      <button type="button" data-v="no" aria-pressed="true">いない<small>上限4万円（通常）</small></button>
+      <button type="button" data-v="yes" aria-pressed="false">いる<small>上限6万円（特例）</small></button>
+    </div>
+    <div class="hint">「いる」の人は、申告書の<b>「年齢23歳未満の扶養親族の有無」</b>で「有」に○をし、下の<b>☆欄</b>にその子の氏名・生年月日・続柄も書きます。</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card" id="c-life">
+    <div class="card-h"><span class="stepno">2</span><h2>生命保険料控除証明書を1枚ずつ入力</h2></div>
+    <p class="sub">証明書1枚（1契約）につき1つ追加。<b>区分</b>（一般／介護医療／個人年金）と<b>新・旧</b>は証明書に書いてあります。</p>
+    <div class="rows" id="rows"></div>
+    <button type="button" class="add" id="add">＋ 証明書を追加</button>
+    <details class="more"><summary>証明書のどこを見る？</summary>
+      <div class="body">・<b>区分</b>：「一般生命保険料」「介護医療保険料」「個人年金保険料」のどれか（1枚に複数書かれていることも。その場合は区分ごとに分けて追加）。<br>・<b>新・旧</b>：「新制度／旧制度」「新契約／旧契約」の表示。平成24年1月1日以後の契約が「新」、介護医療は必ず「新」。<br>・<b>金額</b>：「申告額」「年間払込予定額」「12月末時点の払込額」と書かれた方（「証明額」は9〜10月までの実績なので使わない）。</div>
+    </details>
+  </section>
+
+  <!-- 3 -->
+  <section class="card" id="c-eq">
+    <div class="card-h"><span class="stepno">3</span><h2>地震保険料</h2><span class="opt">ない人は空欄</span></div>
+    <p class="sub">地震保険料控除証明書の金額。火災保険だけの契約は対象外です。</p>
+    <div class="field"><label>地震保険料（年間）</label><div class="money"><input id="eq" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+    <div class="field"><label>旧長期損害保険料（平成18年までに契約した長期の損害保険）</label><div class="money"><input id="lg" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+    <div class="hint">1つの契約が地震と旧長期の両方に当てはまる場合は、どちらか一方だけに入れます。</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card" id="c-soc">
+    <div class="card-h"><span class="stepno">4</span><h2>自分で払った社会保険料</h2><span class="opt">ない人は空欄</span></div>
+    <p class="sub">給与天引き<b>以外</b>で払った国民年金・国民健康保険・国民年金基金など。家族（学生の子など）の分を払った場合も含みます。</p>
+    <div class="field"><label>本年中に払った社会保険料の合計</label><div class="money"><input id="soc" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+    <div class="hint">国民年金・国民年金基金は<b>控除証明書の添付が必要</b>（日本年金機構から届くハガキ）。国民健康保険は証明書不要です。</div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card" id="c-ideco">
+    <div class="card-h"><span class="stepno">5</span><h2>iDeCo・小規模企業共済の掛金</h2><span class="opt">ない人は空欄</span></div>
+    <p class="sub">「小規模企業共済等掛金払込証明書」の金額。給与天引きの企業型DCは会社が把握しているので入れません。</p>
+    <div class="field"><label>本年中に払った掛金の合計</label><div class="money"><input id="ideco" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+  </section>
+
+  <!-- transfer guide -->
+  <section class="card" id="c-tr">
+    <div class="card-h"><span class="stepno">✓</span><h2>申告書への転記ガイド</h2></div>
+    <p class="sub">様式の記号（A・B・①…）ごとに書く数字です。ガイド③タブの様式画像と合わせてご覧ください。</p>
+    <table class="tr-table" id="tr"></table>
+    <button type="button" class="reset" id="reset">入力をすべて消す</button>
+    <p class="foot">※概算です。控除額の計算は1円未満切り上げ（申告書の計算式どおり）。実際の年税額は勤務先の計算によります。<br>※計算はこの端末内だけで行われ、入力内容が外部に送信されることはありません。<br>出典：国税庁 <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm" target="_blank" rel="noopener">No.1140 生命保険料控除</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm" target="_blank" rel="noopener">No.1145 地震保険料控除</a></p>
+  </section>
+</main>
+
+<!-- sticky result -->
+<div class="res-bar" id="res">
+  <div class="wrap">
+    <div class="res-top" id="res-top" role="button" aria-expanded="false">
+      <div class="lab">保険料控除の合計（概算）<b id="res-sum-label">内訳を見る</b></div>
+      <div class="tot" id="res-total">¥0</div>
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+    </div>
+    <div class="res-body" id="res-body"></div>
+  </div>
+</div>
+
+<script>
+/* ===== 計算（令和8年分。1円未満切り上げ） ===== */
+const num=v=>{const n=parseInt(String(v).replace(/[^\d]/g,""),10);return isNaN(n)?0:n;};
+const yen=n=>"¥"+Math.round(n).toLocaleString("ja-JP");
+const cN=p=>p<=0?0:p<=20000?p:p<=40000?Math.ceil(p/2)+10000:p<=80000?Math.ceil(p/4)+20000:40000;           // 計算式Ⅰ（新）
+const cN6=p=>p<=0?0:p<=30000?p:p<=60000?Math.ceil(p/2)+15000:p<=120000?Math.ceil(p/4)+30000:60000;        // 計算式Ⅱ（23歳未満の扶養親族あり・一般の新）
+const cO=p=>p<=0?0:p<=25000?p:p<=50000?Math.ceil(p/2)+12500:p<=100000?Math.ceil(p/4)+25000:50000;         // 計算式Ⅲ（旧）
+const cLong=p=>p<=0?0:p<=10000?p:p<=20000?Math.ceil(p/2)+5000:15000;                                       // 旧長期損害保険料
+
+function calc(){
+  const u23=state.u23==="yes";
+  const sum=(cat,kind)=>state.rows.filter(r=>r.cat===cat&&(kind?r.kind===kind:true)).reduce((a,r)=>a+num(r.amt),0);
+  const A=sum("gen","new"),B=sum("gen","old"),C=sum("care"),D=sum("pen","new"),E=sum("pen","old");
+  const i1=cN(A),i2=u23?cN6(A):0,i3=cO(B),i4=Math.min(i1+i3,40000),i5=u23?Math.min(i2+i3,60000):0;
+  const gen=u23?Math.max(i3,i5):Math.max(i3,i4);
+  const care=cN(C);
+  const i6=cN(D),i7=cO(E),i8=Math.min(i6+i7,40000);const pen=Math.max(i7,i8);
+  const life=Math.min(gen+care+pen,120000);
+  const eq=num(state.eq),lg=num(state.lg);
+  const eqB=Math.min(eq,50000),eqC=cLong(lg);const jishin=Math.min(eqB+eqC,50000);
+  const soc=num(state.soc),ideco=num(state.ideco);
+  return {u23,A,B,C,D,E,i1,i2,i3,i4,i5,gen,care,i6,i7,i8,pen,life,eq,lg,eqB,eqC,jishin,soc,ideco,total:life+jishin+soc+ideco};
+}
+
+/* ===== 状態（端末内に自動保存） ===== */
+const KEY="hoken-r8";
+const blank=()=>({u23:"no",rows:[{cat:"gen",kind:"new",amt:""}],eq:"",lg:"",soc:"",ideco:""});
+let state=blank();
+try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&Array.isArray(s.rows))state=Object.assign(blank(),s);}catch(e){}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const CAT={gen:"一般の生命保険料",care:"介護医療保険料",pen:"個人年金保険料"};
+
+/* ===== 入力UI ===== */
+function fmtInput(el){const n=num(el.value);el.value=n?n.toLocaleString("ja-JP"):"";const c=el.parentElement.querySelector(".clr");if(c)c.hidden=!n;}
+function wireMoney(el,onChange){
+  el.addEventListener("input",()=>{const pos=el.value.length-el.selectionStart;fmtInput(el);el.setSelectionRange(el.value.length-pos,el.value.length-pos);onChange(num(el.value));});
+  const c=el.parentElement.querySelector(".clr");if(c)c.addEventListener("click",()=>{el.value="";c.hidden=true;onChange(0);el.focus();});
+}
+function renderRows(){
+  const box=$("#rows");
+  box.innerHTML=state.rows.map((r,i)=>`<div class="row" data-i="${i}">
+    <div class="rh"><b>証明書 ${i+1}</b>${state.rows.length>1?`<button type="button" class="del">削除</button>`:""}</div>
+    <div class="seg three sm cat">${Object.entries(CAT).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="${r.cat===k}">${v.replace("保険料","").replace("の生命","")}</button>`).join("")}</div>
+    <div class="seg sm kind"${r.cat==="care"?' style="display:none"':""}>
+      <button type="button" data-v="new" aria-pressed="${r.kind==="new"}">新<small>平成24年1月1日以後の契約</small></button>
+      <button type="button" data-v="old" aria-pressed="${r.kind==="old"}">旧<small>平成23年12月31日以前の契約</small></button>
+    </div>
+    <div class="field"><label>申告額（年間・12月まで払った場合）</label><div class="money"><input inputmode="numeric" placeholder="0" value="${esc(r.amt?num(r.amt).toLocaleString("ja-JP"):"")}" aria-label="証明書${i+1}の金額"><span class="unit">円</span><button class="clr" aria-label="消去"${r.amt?"":" hidden"}>×</button></div></div>
+    <div class="calc" data-calc></div>
+  </div>`).join("");
+  box.querySelectorAll(".row").forEach(row=>{
+    const i=+row.dataset.i,r=state.rows[i];
+    row.querySelectorAll(".cat button").forEach(b=>b.addEventListener("click",()=>{r.cat=b.dataset.v;if(r.cat==="care")r.kind="new";save();renderRows();update();}));
+    row.querySelectorAll(".kind button").forEach(b=>b.addEventListener("click",()=>{r.kind=b.dataset.v;row.querySelectorAll(".kind button").forEach(x=>x.setAttribute("aria-pressed",x===b));save();update();}));
+    const del=row.querySelector(".del");if(del)del.addEventListener("click",()=>{state.rows.splice(i,1);save();renderRows();update();});
+    wireMoney(row.querySelector("input"),v=>{r.amt=v?String(v):"";save();update();});
+  });
+}
+$("#add").addEventListener("click",()=>{state.rows.push({cat:"gen",kind:"new",amt:""});save();renderRows();update();const rows=document.querySelectorAll(".row");const last=rows[rows.length-1];last.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>last.querySelector("input").focus(),350);});
+$("#seg-u23").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state.u23=b.dataset.v;$("#seg-u23").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));save();update();}));
+[["eq","eq"],["lg","lg"],["soc","soc"],["ideco","ideco"]].forEach(([id,k])=>{const el=$("#"+id);el.value=state[k]?num(state[k]).toLocaleString("ja-JP"):"";fmtInput(el);wireMoney(el,v=>{state[k]=v?String(v):"";save();update();});});
+$("#reset").addEventListener("click",()=>{if(!confirm("入力をすべて消しますか？"))return;state=blank();save();location.reload();});
+$("#res-top").addEventListener("click",()=>{const o=$("#res").classList.toggle("open");$("#res-top").setAttribute("aria-expanded",o);$("#res-sum-label").textContent=o?"内訳を閉じる":"内訳を見る";});
+
+/* ===== 表示更新 ===== */
+function update(){
+  const c=calc();
+  // 行ごとの控除額の目安
+  document.querySelectorAll(".row").forEach(row=>{
+    const r=state.rows[+row.dataset.i],a=num(r.amt),el=row.querySelector("[data-calc]");
+    if(!a){el.textContent="";return;}
+    const v=r.cat==="care"?cN(a):r.kind==="old"?cO(a):(r.cat==="gen"&&c.u23)?cN6(a):cN(a);
+    el.innerHTML=`この契約だけなら控除 <b>${yen(v)}</b>（同じ区分は合算して計算）`;
+  });
+  $("#res-total").textContent=yen(c.total);
+  const R=(l,v,sub)=>`<div class="res-row${sub?" sub":""}"><span>${l}</span><b>${yen(v)}</b></div>`;
+  $("#res-body").innerHTML=R("生命保険料控除",c.life)+R("一般の生命保険料 ㋑",c.gen,1)+R("介護医療保険料 ㋺",c.care,1)+R("個人年金保険料 ㋩",c.pen,1)
+    +R("地震保険料控除",c.jishin)+R("社会保険料控除",c.soc)+R("小規模企業共済等掛金控除",c.ideco)
+    +`<p class="res-note">生命保険料控除は3区分合計で最高12万円${c.gen+c.care+c.pen>120000?"（上限に達しています）":""}。地震保険料控除は最高5万円。社会保険料・小規模企業共済等掛金は全額が控除されます。</p>`;
+  // 転記ガイド
+  const u=c.u23;
+  const rows=[
+    ["hd","一般の生命保険料"],
+    ["A","(a)のうち新保険料等の金額の合計額",c.A],
+    ["B","(a)のうち旧保険料等の金額の合計額",c.B],
+    ["有無","年齢23歳未満の扶養親族の有無",u?"有 に○":"無 に○"],
+    ...(u?[["②","Aを計算式Ⅱに当てはめた金額（最高60,000円）",c.i2]]:[["①","Aを計算式Ⅰに当てはめた金額（最高40,000円）",c.i1]]),
+    ["③","Bを計算式Ⅲに当てはめた金額（最高50,000円）",c.i3],
+    ...(u?[["⑤","計（②＋③）（最高60,000円）",c.i5]]:[["④","計（①＋③）（最高40,000円）",c.i4]]),
+    ["㋑",u?"③と⑤のいずれか大きい金額":"③と④のいずれか大きい金額",c.gen],
+    ["hd","介護医療保険料"],
+    ["C","(a)の金額の合計額",c.C],
+    ["㋺","Cを計算式Ⅰに当てはめた金額（最高40,000円）",c.care],
+    ["hd","個人年金保険料"],
+    ["D","(a)のうち新保険料等の金額の合計額",c.D],
+    ["E","(a)のうち旧保険料等の金額の合計額",c.E],
+    ["⑥","Dを計算式Ⅰに当てはめた金額（最高40,000円）",c.i6],
+    ["⑦","Eを計算式Ⅲに当てはめた金額（最高50,000円）",c.i7],
+    ["⑧","計（⑥＋⑦）（最高40,000円）",c.i8],
+    ["㋩","⑦と⑧のいずれか大きい金額",c.pen],
+    ["hd","生命保険料控除額"],
+    ["計","㋑＋㋺＋㋩（最高120,000円）",c.life],
+    ["hd","地震保険料控除"],
+    ["Ⓑ","Ⓐのうち地震保険料の金額の合計額",c.eq],
+    ["Ⓒ","Ⓐのうち旧長期損害保険料の金額の合計額",c.lg],
+    ["控除額","Ⓑ（最高50,000円）＋Ⓒの計算額（最高15,000円）＝（最高50,000円）",c.jishin],
+    ["hd","社会保険料控除・小規模企業共済等掛金控除"],
+    ["合計","社会保険料控除 合計（控除額）",c.soc],
+    ["合計","小規模企業共済等掛金控除 合計（控除額）",c.ideco]
+  ];
+  $("#tr").innerHTML=`<thead><tr><th>欄</th><th>書くもの</th><th style="text-align:right">金額</th></tr></thead><tbody>`+rows.map(r=>r[0]==="hd"?`<tr class="hd"><td colspan="3">${r[1]}</td></tr>`
+    :`<tr class="${typeof r[2]==="number"&&r[2]===0?"zero":""}"><td><span class="k">${r[0]}</span></td><td>${r[1]}</td><td class="v">${typeof r[2]==="number"?r[2].toLocaleString("ja-JP")+" 円":esc(r[2])}</td></tr>`).join("")+"</tbody>";
+}
+$("#seg-u23").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.u23));
+renderRows();update();
+</script>
+</body>
+</html>
