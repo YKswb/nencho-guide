@@ -29,6 +29,13 @@ node overlay.mjs ../../index.html .. ./check
 HTML内の `FORMS` の枠（`box:[左%,上%,幅%,高さ%]`）を画像に重ね描きした
 `check/form1-overlay.png` などができるので、ずれを見て `box` を直します。
 
+## 4. 保険料控除ツール（hoken.html）の欄位置の確認
+`hoken.html` は計算結果を `forms/f3.webp` の上に直接描きます。欄の座標は HTML 内の `const F`（様式画像 1853×1310px 上の px）。
+```bash
+node fields-check.mjs ../../hoken.html ../src/png/f3-1.png ./check/f3-fields.png
+```
+で全欄に枠と名前を描いた画像ができるので、様式が変わった年はこれでずれを確認して `F` を直します。
+
 ## 注意
 - 様式が変わると欄の位置が動くので、翌年分は必ず overlay で確認すること。
 - 記載例の人物設定（記入 太郎／花子／一郎／次郎）と金額は HTML の `FORMS` コメント参照。

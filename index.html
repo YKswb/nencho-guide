@@ -715,7 +715,7 @@ function simJutaku(){
    記載例の人物：記入 太郎（本人・給与650万）／花子（妻・パート130万）／一郎（子・20歳・大学生）／次郎（子・10歳） */
 const NTA_FORM="https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/pdf/";
 const FORMS={
-  form1:{title:"令和9年分 給与所得者の扶養控除等（異動）申告書",sub:"国税庁の様式（表面）。今回の年末調整では来年分（令和9年分）を提出します",img:"forms/f1.webp",w:1853,h:1310,src:NTA_FORM+"2027bun_01.pdf",
+  form1:{title:"令和9年分 給与所得者の扶養控除等（異動）申告書",year:"令和9年分 様式",sub:"国税庁の様式（表面）。今回の年末調整では来年分（令和9年分）を提出します",img:"forms/f1.webp",w:1853,h:1310,src:NTA_FORM+"2027bun_01.pdf",
     patterns:{single:["me"],spouse:["me","a","inc"],dual:["me","b","u16","d"],u16:["me","u16"],kids:["me","b","tok","inc"],parent:["me","b","tok","inc"],solo:["me","c","b","u16"],disab:["me","c"]},
     spots:[
       {id:"co",n:"社",co:true,box:[12.3,5.3,27,13.7],label:"給与の支払者（会社）の欄",who:"co",desc:"会社名・法人番号・所在地は会社側で記載します。空欄のままで大丈夫です。左端の「税務署長・市区町村長」も会社が書きます。"},
@@ -756,7 +756,7 @@ const FORMS={
         ex:[["通常","空欄"],["妻が来年退職金を受け取る見込み","氏名・所得の見積額（退職所得を除く）などを記入"]],
         desc:"家族が令和9年中に退職金をもらう見込みがある場合だけの欄です（住民税では退職所得を除いて扶養を判定するため）。"}
     ]},
-  form2:{title:"令和8年分 基礎控除申告書 兼 配偶者控除等申告書 兼 特定親族特別控除申告書 兼 所得金額調整控除申告書",sub:"国税庁の様式（表面）",img:"forms/f2.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_06.pdf",
+  form2:{title:"令和8年分 基礎控除申告書 兼 配偶者控除等申告書 兼 特定親族特別控除申告書 兼 所得金額調整控除申告書",year:"令和8年分 様式",sub:"国税庁の様式（表面）",img:"forms/f2.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_06.pdf",
     spots:[
       {id:"co",n:"社",co:true,box:[6.5,6.5,36,9.2],label:"給与の支払者（会社）の欄",who:"co",desc:"会社側で記載します。空欄でOK。"},
       {id:"me",n:"1",box:[42.4,6.5,35.3,9.2],label:"あなたの氏名・住所",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"全員が記入します。"},
@@ -785,7 +785,7 @@ const FORMS={
         ex:[["収入850万円以下の人","空欄"],["要件","☑ 扶養親族が年齢23歳未満（平16.1.2以後生）"],["☆扶養親族等の氏名／続柄","記入 一郎／子"],["生年月日／所得の見積額","平成18年4月15日／360,000 円"]],
         desc:"給与収入850万円超の人だけが対象。23歳未満の扶養親族がいる、または本人・配偶者・扶養親族が特別障害者、のどれかに当てはまれば記入します。"}
     ]},
-  form3:{title:"令和8年分 給与所得者の保険料控除申告書",sub:"国税庁の様式（表面）",img:"forms/f3.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_04.pdf",
+  form3:{title:"令和8年分 給与所得者の保険料控除申告書",year:"令和8年分 様式",sub:"国税庁の様式（表面）",img:"forms/f3.webp",w:1853,h:1310,src:NTA_FORM+"2026bun_04.pdf",
     spots:[
       {id:"co",n:"社",co:true,box:[6.5,6.5,40,12.2],label:"給与の支払者（会社）の欄",who:"co",desc:"会社側で記載します。空欄でOK。"},
       {id:"me",n:"1",box:[46.7,6.5,37,12.2],label:"あなたの氏名・住所",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"全員が記入します。"},
@@ -819,7 +819,7 @@ const FORMS={
         ex:[["確定拠出年金法に規定する個人型年金加入者掛金（iDeCo）","276,000 円"],["合計（控除額）","276,000 円"]],
         desc:"iDeCo（個人型）は『小規模企業共済等掛金払込証明書』の金額を記入します。給与天引きの企業型DCやiDeCoは会社が把握しているので書きません。"}
     ]},
-  form4:{title:"令和8年分 給与所得者の住宅借入金等特別控除申告書 兼 計算明細書",sub:"税務署から届く用紙（上：申告書／下：証明書）。画像は国税庁の記載例（令和7年入居・省エネ基準適合住宅・控除率0.7%）",img:"forms/f4.webp",w:1420,h:1810,src:"https://www.nta.go.jp/publication/pamph/shotoku/jukari/01.pdf",
+  form4:{title:"令和8年分 給与所得者の住宅借入金等特別控除申告書 兼 計算明細書",year:"令和8年分 記載例",sub:"税務署から届く用紙（上：申告書／下：証明書）。画像は国税庁の記載例（令和7年入居・省エネ基準適合住宅・控除率0.7%）",img:"forms/f4.webp",w:1420,h:1810,src:"https://www.nta.go.jp/publication/pamph/shotoku/jukari/01.pdf",
     spots:[
       {id:"co",n:"社",co:true,box:[7,7.2,49.3,9.4],label:"給与の支払者（会社）の欄",who:"co",desc:"会社名・法人番号・所在地と左端の税務署長名は会社側で記載します。"},
       {id:"me",n:"1",box:[56.3,7.2,37.3,9.4],label:"あなたの氏名・住所・世帯主",who:"all",ex:[["フリガナ／氏名","キニュウ タロウ／記入 太郎"],["世帯主の氏名・続柄","本人"],["住所又は居所","東京都○○区△△町1-2-3"]],desc:"税務署から届く用紙には氏名等が印字済みのことがあります。転居していれば現住所を記入してください。"},
@@ -861,7 +861,7 @@ function renderForms(){
       <div class="fimg-scroll${f.h>f.w?" tall":""}"><div class="fimg"><img src="${f.img}" width="${f.w}" height="${f.h}" alt="${esc(f.title)}" loading="lazy" decoding="async">
       ${f.spots.map((s,i)=>`<button class="hs${s.co?" co":""}" data-i="${i}" style="left:${s.box[0]}%;top:${s.box[1]}%;width:${s.box[2]}%;height:${s.box[3]}%" aria-label="${esc(s.label)}の記載例を見る"><span class="hn">${esc(s.n)}</span></button>`).join("")}</div></div>
       <p class="fimg-hint">番号の枠を<b>タップすると記載例と書き方</b>が出ます。「160%／240%」で拡大して、横にスクロールして見られます。</p>
-      <p class="fimg-src">出典：<a href="${f.src}" target="_blank" rel="noopener">国税庁（令和8年分）</a></p>`;
+      <p class="fimg-src">出典：<a href="${f.src}" target="_blank" rel="noopener">国税庁（${esc(f.year)}）</a></p>`;
     const fimg=box.querySelector(".fimg"),scroll=box.querySelector(".fimg-scroll");
     const setZoom=(b,keepPos)=>{
       const z=+b.dataset.z;const ratio=keepPos?scroll.scrollLeft/Math.max(1,fimg.offsetWidth):0;

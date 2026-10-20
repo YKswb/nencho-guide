@@ -6,44 +6,78 @@
 <title>保険料控除 計算ツール（令和8年分）</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@700;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Yomogi&display=swap" rel="stylesheet">
 <style>
 :root{
   --paper:#F4EEDD; --card:#FFFDF6; --ink:#22303C; --ink2:#54616C; --ink3:#8A9399;
   --shu:#C8462C; --shu2:#A83820; --shu-wash:#F3DCD2;
   --ok:#2F7A57; --ok-wash:#DBEDE2; --warn:#B8791A; --warn-wash:#F6E9CC;
-  --blue:#23489a; --blue-wash:#E6ECF8;
-  --line:#D9CFB4; --line2:#C7BB9A; --r:16px;
+  --blue:#1f4aa8; --blue-wash:#E6ECF8;
+  --line:#D9CFB4; --line2:#C7BB9A; --r:16px; --head:52px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0; background:var(--paper); color:var(--ink); font-family:"Zen Kaku Gothic New",system-ui,sans-serif; font-size:16px; line-height:1.7;
-  padding-bottom:calc(120px + env(safe-area-inset-bottom))}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:"Zen Kaku Gothic New",system-ui,sans-serif; font-size:16px; line-height:1.7}
 h1,h2,h3{font-family:"Zen Maru Gothic",sans-serif; line-height:1.35; margin:0}
 button,input,select{font:inherit; color:inherit}
-.wrap{max-width:560px; margin:0 auto; padding:0 14px}
 
 /* header */
-.top{position:sticky; top:0; z-index:20; background:rgba(244,238,221,.95); backdrop-filter:blur(8px); border-bottom:1px solid var(--line)}
-.top .wrap{display:flex; align-items:center; gap:10px; padding:10px 14px}
+.top{position:sticky; top:0; z-index:40; background:rgba(244,238,221,.96); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); height:var(--head)}
+.top .in{max-width:1180px; margin:0 auto; display:flex; align-items:center; gap:10px; padding:0 14px; height:100%}
 .back{text-decoration:none; color:var(--shu2); font-weight:700; font-size:13px; white-space:nowrap; padding:6px 10px; border-radius:999px; background:var(--shu-wash)}
-.top h1{font-size:16px; font-weight:900; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.top h1{font-size:15.5px; font-weight:900; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
 .yr{font-size:11px; color:#fff; background:var(--ink); padding:2px 8px; border-radius:999px; font-weight:700; white-space:nowrap}
 
-.lead{padding:16px 0 4px}
-.lead p{margin:6px 0 0; font-size:14px; color:var(--ink2)}
-.lead .big{font-family:"Zen Maru Gothic"; font-weight:900; font-size:22px; color:var(--ink)}
-.steps{font-size:12.5px; color:var(--ink2); background:var(--card); border:1px dashed var(--line2); border-radius:12px; padding:10px 13px; margin-top:12px}
-.steps b{color:var(--shu2)}
+/* layout: phone = preview pinned on top, inputs below / desktop = inputs left, preview right */
+.layout{max-width:1180px; margin:0 auto; padding:0 14px 40px}
+.pv-wrap{position:sticky; top:var(--head); z-index:30; background:var(--paper); padding:8px 0 6px; margin:0 -14px; padding-left:14px; padding-right:14px; border-bottom:1px solid var(--line)}
+.pv-head{display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap}
+.pv-title{font-family:"Zen Maru Gothic"; font-weight:900; font-size:13.5px; display:flex; align-items:center; gap:7px}
+.pv-title .pin{width:8px; height:8px; border-radius:50%; background:var(--shu)}
+.pv-sum{margin-left:auto; font-family:"Zen Maru Gothic"; font-weight:900; font-size:12.5px; color:var(--ink2); white-space:nowrap}
+.pv-sum b{font-size:17px; color:var(--shu2); margin-left:4px}
+.pv-tools{display:flex; gap:5px; width:100%}
+.zb{font-family:"Zen Maru Gothic"; font-weight:700; font-size:12px; padding:5px 10px; border-radius:999px; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); cursor:pointer; white-space:nowrap}
+.zb[aria-pressed="true"]{background:var(--ink); color:#fff; border-color:var(--ink)}
+.zb.full-btn{margin-left:auto}
+.pv{position:relative; height:34vh; min-height:200px; overflow:auto; border:1.5px solid var(--line2); border-radius:12px; background:#e9e4d6; -webkit-overflow-scrolling:touch; touch-action:pan-x pan-y pinch-zoom}
+.stage{position:relative; width:var(--sw,100%); line-height:0}
+.stage img{width:100%; height:auto; display:block; user-select:none; -webkit-user-drag:none}
+.ov{position:absolute; display:flex; align-items:flex-end; justify-content:flex-end; padding:0 calc(var(--sw) * .013) calc(var(--sw) * .0025) 0;
+  font-family:"Yomogi","Zen Maru Gothic",cursive; color:var(--blue); font-size:calc(var(--sw) * .0128); line-height:1; white-space:nowrap; pointer-events:none; letter-spacing:.02em}
+.ov.lt{justify-content:flex-start; padding-left:calc(var(--sw) * .006)}
+.ov.sm{font-size:calc(var(--sw) * .0095)}
+.ov.mid{align-items:center}
+.ov.note{font-family:"Zen Kaku Gothic New"; font-size:calc(var(--sw) * .0085); color:var(--shu2); align-items:center; justify-content:flex-start; white-space:normal; line-height:1.25; text-align:left}
+.circ{position:absolute; border:calc(var(--sw) * .0016 + 1px) solid var(--blue); border-radius:50%; pointer-events:none}
+.region{position:absolute; border:2px dashed var(--shu); border-radius:6px; background:rgba(200,70,44,.05); pointer-events:none; transition:.25s; box-shadow:0 0 0 2px rgba(255,255,255,.5)}
+.pv-note{font-size:11.5px; color:var(--ink2); margin:6px 0 0; line-height:1.5}
+.pv-note b{color:var(--blue)}
+/* full-screen preview */
+.pv-wrap.full{position:fixed; inset:0; z-index:60; margin:0; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); border:0; display:flex; flex-direction:column}
+.pv-wrap.full .pv{flex:1; height:auto}
+.pv-wrap.full .pv-note{display:none}
+@media(min-width:900px){
+  .layout{display:grid; grid-template-columns:minmax(380px,460px) minmax(0,1fr); gap:22px; align-items:start; padding-top:14px}
+  .pv-wrap{grid-column:2; grid-row:1 / span 2; position:sticky; top:calc(var(--head) + 14px); margin:0; padding:0; border:0; background:transparent; z-index:1; min-width:0}
+  .pv{height:auto; max-height:calc(100vh - var(--head) - 120px); width:100%}
+  .inputs{grid-column:1}
+  .lead{grid-column:1}
+}
 
-/* cards */
-.card{background:var(--card); border:1.5px solid var(--line2); border-radius:var(--r); padding:16px 15px; margin:14px 0; box-shadow:0 1px 0 #fff inset, 0 10px 28px -18px rgba(34,48,60,.35)}
+/* intro + cards */
+.lead{padding:14px 0 2px}
+.lead .big{font-family:"Zen Maru Gothic"; font-weight:900; font-size:21px}
+.lead p{margin:4px 0 0; font-size:13.5px; color:var(--ink2)}
+.card{background:var(--card); border:1.5px solid var(--line2); border-radius:var(--r); padding:15px 15px 14px; margin:12px 0; box-shadow:0 1px 0 #fff inset, 0 10px 28px -18px rgba(34,48,60,.35); scroll-margin-top:calc(var(--head) + 42vh)}
+@media(min-width:900px){.card{scroll-margin-top:calc(var(--head) + 20px)}}
+.card.active{border-color:var(--shu)}
 .card-h{display:flex; align-items:center; gap:10px; margin-bottom:6px}
-.stepno{flex:0 0 auto; width:30px; height:30px; border-radius:50%; background:var(--shu); color:#fff; display:grid; place-items:center; font-family:"Zen Maru Gothic"; font-weight:900; font-size:14px}
-.card-h h2{font-size:17px; font-weight:900}
+.stepno{flex:0 0 auto; width:28px; height:28px; border-radius:50%; background:var(--shu); color:#fff; display:grid; place-items:center; font-family:"Zen Maru Gothic"; font-weight:900; font-size:13.5px}
+.card-h h2{font-size:16.5px; font-weight:900}
 .card-h .opt{margin-left:auto; font-size:11px; color:var(--ink2); border:1px solid var(--line2); border-radius:999px; padding:1px 8px; white-space:nowrap}
-.card p.sub{margin:0 0 12px; font-size:13.5px; color:var(--ink2)}
-.hint{font-size:12.5px; color:var(--ink2); background:var(--blue-wash); border-radius:10px; padding:9px 12px; margin-top:10px; line-height:1.65}
+.card p.sub{margin:0 0 10px; font-size:13px; color:var(--ink2)}
+.hint{font-size:12.5px; color:var(--ink2); background:var(--blue-wash); border-radius:10px; padding:8px 12px; margin-top:10px; line-height:1.6}
 .hint b{color:var(--blue)}
 details.more{margin-top:8px; font-size:13px}
 details.more summary{cursor:pointer; color:var(--shu2); font-weight:700; list-style:none; display:inline-flex; gap:6px; align-items:center}
@@ -51,161 +85,151 @@ details.more summary::-webkit-details-marker{display:none}
 details.more summary::before{content:"▸"; transition:.15s}
 details.more[open] summary::before{transform:rotate(90deg)}
 details.more .body{margin-top:6px; color:var(--ink2); line-height:1.7}
+.badge-new{font-size:10px; font-weight:700; color:#fff; background:var(--shu); padding:2px 7px; border-radius:999px; vertical-align:middle}
 
 /* segmented control */
 .seg{display:grid; grid-template-columns:1fr 1fr; gap:8px}
 .seg.three{grid-template-columns:1fr 1fr 1fr}
-.seg button{min-height:52px; border-radius:14px; border:2px solid var(--line2); background:#fff; color:var(--ink2); font-weight:700; font-size:15px; cursor:pointer; padding:6px 8px; line-height:1.3; transition:.12s}
+.seg button{min-height:50px; border-radius:14px; border:2px solid var(--line2); background:#fff; color:var(--ink2); font-weight:700; font-size:15px; cursor:pointer; padding:6px 8px; line-height:1.3; transition:.12s}
 .seg button small{display:block; font-weight:400; font-size:11px; color:var(--ink3)}
 .seg button[aria-pressed="true"]{background:var(--ink); border-color:var(--ink); color:#fff}
 .seg button[aria-pressed="true"] small{color:#C8D0D8}
-.seg.sm button{min-height:42px; font-size:14px; border-radius:11px}
+.seg.sm button{min-height:40px; font-size:14px; border-radius:11px}
 
 /* money input */
-.field{margin-top:12px}
-.field label{display:block; font-size:13px; font-weight:700; color:var(--ink2); margin-bottom:5px}
-.money{display:flex; align-items:center; gap:6px; background:#fff; border:2px solid var(--line2); border-radius:14px; padding:4px 14px; transition:.12s}
+.field{margin-top:10px}
+.field label{display:block; font-size:12.5px; font-weight:700; color:var(--ink2); margin-bottom:4px}
+.money{display:flex; align-items:center; gap:6px; background:#fff; border:2px solid var(--line2); border-radius:14px; padding:2px 14px; transition:.12s}
 .money:focus-within{border-color:var(--shu); box-shadow:0 0 0 4px rgba(200,70,44,.12)}
-.money input{flex:1; min-width:0; border:0; outline:0; background:transparent; font-size:24px; font-weight:700; text-align:right; font-family:"Zen Maru Gothic"; padding:8px 0; color:var(--ink)}
+.money input{flex:1; min-width:0; border:0; outline:0; background:transparent; font-size:23px; font-weight:700; text-align:right; font-family:"Zen Maru Gothic"; padding:8px 0; color:var(--ink)}
 .money input::placeholder{color:#C9C2B0; font-weight:700}
 .money .unit{font-size:15px; color:var(--ink2); font-weight:700}
 .money .clr{border:0; background:var(--paper); width:28px; height:28px; border-radius:50%; color:var(--ink2); cursor:pointer; font-size:14px; display:grid; place-items:center; flex:0 0 auto}
 .money .clr[hidden]{display:none}
 
 /* certificate rows */
-.rows{display:flex; flex-direction:column; gap:12px}
-.row{background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:12px 12px 10px; position:relative}
-.row .rh{display:flex; align-items:center; justify-content:space-between; margin-bottom:8px}
+.rows{display:flex; flex-direction:column; gap:10px}
+.row{background:#fff; border:1.5px solid var(--line); border-radius:14px; padding:11px 12px 9px}
+.row .rh{display:flex; align-items:center; justify-content:space-between; margin-bottom:6px}
 .row .rh b{font-family:"Zen Maru Gothic"; font-size:13.5px; color:var(--ink2)}
+.row .rh b small{font-weight:400; color:var(--ink3); margin-left:6px}
 .row .del{border:0; background:transparent; color:var(--ink3); font-size:13px; cursor:pointer; padding:4px 8px; border-radius:8px}
 .row .del:hover{background:var(--shu-wash); color:var(--shu2)}
 .row .seg{margin-top:8px}
-.row .field{margin-top:10px}
-.row .calc{font-size:12.5px; color:var(--ink2); margin-top:8px; text-align:right}
+.row .calc{font-size:12.5px; color:var(--ink2); margin-top:6px; text-align:right}
 .row .calc b{color:var(--ink); font-family:"Zen Maru Gothic"}
-.add{width:100%; margin-top:12px; min-height:50px; border-radius:14px; border:2px dashed var(--shu); background:var(--shu-wash); color:var(--shu2); font-weight:700; font-size:15px; cursor:pointer}
+.add{width:100%; margin-top:10px; min-height:48px; border-radius:14px; border:2px dashed var(--shu); background:var(--shu-wash); color:var(--shu2); font-weight:700; font-size:15px; cursor:pointer}
 .add:hover{background:#EFCFC3}
 
-/* result */
-.res-bar{position:fixed; left:0; right:0; bottom:0; z-index:30; background:var(--ink); color:#fff; box-shadow:0 -10px 30px rgba(34,48,60,.35);
-  border-radius:18px 18px 0 0; padding:0 0 env(safe-area-inset-bottom)}
-.res-bar .wrap{padding:0 14px}
-.res-top{display:flex; align-items:center; gap:10px; padding:12px 0; cursor:pointer; user-select:none}
-.res-top .lab{font-size:12px; color:#C8D0D8; line-height:1.3}
-.res-top .lab b{display:block; color:#fff; font-size:13.5px; font-family:"Zen Maru Gothic"}
-.res-top .tot{margin-left:auto; font-family:"Zen Maru Gothic"; font-weight:900; font-size:26px; color:#FFD9A8; white-space:nowrap}
-.res-top .chev{transition:.2s; color:#C8D0D8}
-.res-bar.open .res-top .chev{transform:rotate(180deg)}
-.res-body{display:none; padding:0 0 14px; max-height:60vh; overflow:auto}
-.res-bar.open .res-body{display:block}
-.res-row{display:flex; justify-content:space-between; align-items:baseline; gap:10px; padding:7px 0; border-top:1px solid rgba(255,255,255,.12); font-size:13.5px}
-.res-row span{color:#C8D0D8} .res-row b{font-family:"Zen Maru Gothic"; font-size:17px; color:#FFD9A8; white-space:nowrap}
-.res-row.sub{font-size:12.5px; padding:3px 0 3px 14px; border-top:0} .res-row.sub b{font-size:14px; color:#fff}
-.res-note{font-size:11.5px; color:#AAB4BE; margin-top:10px; line-height:1.6}
-
-/* transfer guide */
-.tr-table{width:100%; border-collapse:collapse; font-size:13px; margin-top:8px}
-.tr-table th,.tr-table td{padding:7px 6px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top}
-.tr-table th{font-size:11.5px; color:var(--ink2); font-weight:700; background:var(--paper)}
-.tr-table td.v{text-align:right; font-family:"Zen Maru Gothic"; font-weight:700; white-space:nowrap}
-.tr-table td .k{display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 5px; border-radius:6px; background:var(--ink); color:#fff; font-size:11.5px; font-weight:700; margin-right:5px}
-.tr-table tr.hd td{background:var(--ok-wash); font-weight:700; color:var(--ok); font-size:12px}
-.tr-table tr.zero td{color:var(--ink3)}
-.tr-table tr.zero td.v{color:var(--ink3)}
-.badge-new{font-size:10px; font-weight:700; color:#fff; background:var(--shu); padding:2px 7px; border-radius:999px; vertical-align:middle}
-.reset{display:block; margin:18px auto 0; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); border-radius:999px; padding:8px 18px; font-size:13px; cursor:pointer}
-.foot{font-size:11.5px; color:var(--ink3); margin:18px 0 0; line-height:1.7}
+/* summary */
+.sum-list{list-style:none; margin:0; padding:0}
+.sum-list li{display:flex; justify-content:space-between; gap:10px; padding:7px 0; border-top:1px solid var(--line); font-size:13.5px}
+.sum-list li.sub{font-size:12.5px; color:var(--ink2); padding:3px 0 3px 14px; border-top:0}
+.sum-list li b{font-family:"Zen Maru Gothic"; white-space:nowrap}
+.sum-list li.total{font-size:15px; border-top:2px solid var(--ink)} .sum-list li.total b{color:var(--shu2); font-size:19px}
+.reset{display:block; margin:16px auto 0; border:1.5px solid var(--line2); background:#fff; color:var(--ink2); border-radius:999px; padding:8px 18px; font-size:13px; cursor:pointer}
+.foot{font-size:11.5px; color:var(--ink3); margin:16px 0 0; line-height:1.7}
 .foot a{color:var(--ink3)}
-@media(min-width:720px){body{padding-bottom:40px} .res-bar{position:sticky; bottom:16px; border-radius:18px; margin:18px auto 0; max-width:560px}}
 </style>
 </head>
 <body>
 
-<header class="top"><div class="wrap">
+<header class="top"><div class="in">
   <a class="back" href="./">← ガイドへ</a>
   <h1>保険料控除 計算ツール</h1>
   <span class="yr">令和8年分</span>
 </div></header>
 
-<main class="wrap">
+<div class="layout">
+
+  <!-- 申告書プレビュー（スマホ：上に固定／PC：右に固定） -->
+  <aside class="pv-wrap" id="pv-wrap">
+    <div class="pv-head">
+      <div class="pv-title"><span class="pin"></span>申告書にこう書く <span id="pv-region-name" style="font-weight:400;color:var(--ink2);font-size:12px"></span></div>
+      <div class="pv-sum">控除合計<b id="pv-total">¥0</b></div>
+      <div class="pv-tools">
+        <button type="button" class="zb" id="zb-follow" aria-pressed="true">入力中の欄</button>
+        <button type="button" class="zb" id="zb-all" aria-pressed="false">用紙全体</button>
+        <button type="button" class="zb" id="zb-big" aria-pressed="false">拡大</button>
+        <button type="button" class="zb full-btn" id="zb-full">⤢ 大きく表示</button>
+      </div>
+    </div>
+    <div class="pv" id="pv"><div class="stage" id="stage">
+      <img src="forms/f3.webp" width="1853" height="1310" alt="令和8年分 給与所得者の保険料控除申告書" decoding="async">
+      <div id="ov"></div>
+      <div class="region" id="region" hidden></div>
+    </div></div>
+    <p class="pv-note"><b>青字</b>があなたが申告書に書く数字です。入力すると、その場で用紙に反映されます。指でスクロール・拡大できます。</p>
+  </aside>
+
   <div class="lead">
     <div class="big">証明書の金額を入れるだけ。</div>
-    <p>控除額と、<b>保険料控除申告書のどの欄に何を書くか</b>がわかります。入力は自動保存されます（この端末のみ）。</p>
-    <div class="steps"><b>用意するもの：</b>保険会社から届いた「保険料控除証明書」（10〜11月頃に郵送／電子）。入力するのは「<b>申告額</b>（12月まで払った場合の金額）」です。</div>
+    <p>控除額と、<b>保険料控除申告書のどの欄に何を書くか</b>が上の用紙にそのまま表示されます。入力は自動保存（この端末のみ）。</p>
   </div>
 
-  <!-- 1 -->
-  <section class="card" id="c-u23">
-    <div class="card-h"><span class="stepno">1</span><h2>23歳未満の扶養親族はいますか？</h2></div>
-    <p class="sub">お子さんなど、令和8年12月31日時点で<b>23歳未満</b>（平成16年1月2日以後生まれ）の扶養親族がいる人は、一般の生命保険料の控除上限が <b>4万円→6万円</b> に上がります。<span class="badge-new">令和8年分〜</span></p>
-    <div class="seg" id="seg-u23">
-      <button type="button" data-v="no" aria-pressed="true">いない<small>上限4万円（通常）</small></button>
-      <button type="button" data-v="yes" aria-pressed="false">いる<small>上限6万円（特例）</small></button>
-    </div>
-    <div class="hint">「いる」の人は、申告書の<b>「年齢23歳未満の扶養親族の有無」</b>で「有」に○をし、下の<b>☆欄</b>にその子の氏名・生年月日・続柄も書きます。</div>
-  </section>
+  <main class="inputs">
+    <!-- 1 -->
+    <section class="card" id="c-u23" data-region="u23">
+      <div class="card-h"><span class="stepno">1</span><h2>23歳未満の扶養親族はいますか？</h2></div>
+      <p class="sub">令和8年12月31日時点で<b>23歳未満</b>（平成16年1月2日以後生まれ）のお子さんなどがいる人は、一般の生命保険料の控除上限が <b>4万円→6万円</b> に上がります。<span class="badge-new">令和8年分〜</span></p>
+      <div class="seg" id="seg-u23">
+        <button type="button" data-v="no" aria-pressed="true">いない<small>上限4万円（通常）</small></button>
+        <button type="button" data-v="yes" aria-pressed="false">いる<small>上限6万円（特例）</small></button>
+      </div>
+      <div class="hint">「いる」の人は用紙の<b>「有」に○</b>、計算は<b>②⑤の行</b>を使います。下の<b>☆欄</b>にそのお子さんの氏名・生年月日・続柄も書きます。</div>
+    </section>
 
-  <!-- 2 -->
-  <section class="card" id="c-life">
-    <div class="card-h"><span class="stepno">2</span><h2>生命保険料控除証明書を1枚ずつ入力</h2></div>
-    <p class="sub">証明書1枚（1契約）につき1つ追加。<b>区分</b>（一般／介護医療／個人年金）と<b>新・旧</b>は証明書に書いてあります。</p>
-    <div class="rows" id="rows"></div>
-    <button type="button" class="add" id="add">＋ 証明書を追加</button>
-    <details class="more"><summary>証明書のどこを見る？</summary>
-      <div class="body">・<b>区分</b>：「一般生命保険料」「介護医療保険料」「個人年金保険料」のどれか（1枚に複数書かれていることも。その場合は区分ごとに分けて追加）。<br>・<b>新・旧</b>：「新制度／旧制度」「新契約／旧契約」の表示。平成24年1月1日以後の契約が「新」、介護医療は必ず「新」。<br>・<b>金額</b>：「申告額」「年間払込予定額」「12月末時点の払込額」と書かれた方（「証明額」は9〜10月までの実績なので使わない）。</div>
-    </details>
-  </section>
+    <!-- 2 -->
+    <section class="card" id="c-life" data-region="life">
+      <div class="card-h"><span class="stepno">2</span><h2>生命保険料控除証明書を1枚ずつ</h2></div>
+      <p class="sub">証明書1枚（1契約）につき1つ。<b>区分</b>（一般／介護医療／個人年金）と<b>新・旧</b>は証明書に書いてあります。用紙では1行目から順に並びます。</p>
+      <div class="rows" id="rows"></div>
+      <button type="button" class="add" id="add">＋ 証明書を追加</button>
+      <details class="more"><summary>証明書のどこを見る？</summary>
+        <div class="body">・<b>区分</b>：「一般生命保険料」「介護医療保険料」「個人年金保険料」のどれか（1枚に複数書かれていることも。その場合は区分ごとに分けて追加）。<br>・<b>新・旧</b>：「新制度／旧制度」「新契約／旧契約」の表示。平成24年1月1日以後の契約が「新」、介護医療は必ず「新」。<br>・<b>金額</b>：「申告額」「年間払込予定額」「12月末時点の払込額」と書かれた方（「証明額」は9〜10月までの実績なので使わない）。<br>・用紙の「保険会社等の名称」「種類」「契約者」「受取人」は証明書を見ながら手書きしてください（このツールでは入力しません）。</div>
+      </details>
+    </section>
 
-  <!-- 3 -->
-  <section class="card" id="c-eq">
-    <div class="card-h"><span class="stepno">3</span><h2>地震保険料</h2><span class="opt">ない人は空欄</span></div>
-    <p class="sub">地震保険料控除証明書の金額。火災保険だけの契約は対象外です。</p>
-    <div class="field"><label>地震保険料（年間）</label><div class="money"><input id="eq" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
-    <div class="field"><label>旧長期損害保険料（平成18年までに契約した長期の損害保険）</label><div class="money"><input id="lg" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
-    <div class="hint">1つの契約が地震と旧長期の両方に当てはまる場合は、どちらか一方だけに入れます。</div>
-  </section>
+    <!-- 3 -->
+    <section class="card" id="c-eq" data-region="eq">
+      <div class="card-h"><span class="stepno">3</span><h2>地震保険料</h2><span class="opt">ない人は空欄</span></div>
+      <p class="sub">地震保険料控除証明書の金額。火災保険だけの契約は対象外です。</p>
+      <div class="field"><label>地震保険料（年間）</label><div class="money"><input id="eq" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+      <div class="field"><label>旧長期損害保険料（平成18年までに契約した長期の損害保険）</label><div class="money"><input id="lg" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+      <div class="hint">1つの契約が地震と旧長期の両方に当てはまる場合は、どちらか一方だけに入れます。</div>
+    </section>
 
-  <!-- 4 -->
-  <section class="card" id="c-soc">
-    <div class="card-h"><span class="stepno">4</span><h2>自分で払った社会保険料</h2><span class="opt">ない人は空欄</span></div>
-    <p class="sub">給与天引き<b>以外</b>で払った国民年金・国民健康保険・国民年金基金など。家族（学生の子など）の分を払った場合も含みます。</p>
-    <div class="field"><label>本年中に払った社会保険料の合計</label><div class="money"><input id="soc" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
-    <div class="hint">国民年金・国民年金基金は<b>控除証明書の添付が必要</b>（日本年金機構から届くハガキ）。国民健康保険は証明書不要です。</div>
-  </section>
+    <!-- 4 -->
+    <section class="card" id="c-soc" data-region="soc">
+      <div class="card-h"><span class="stepno">4</span><h2>自分で払った社会保険料</h2><span class="opt">ない人は空欄</span></div>
+      <p class="sub">給与天引き<b>以外</b>で払った国民年金・国民健康保険・国民年金基金など。家族（学生の子など）の分を払った場合も含みます。</p>
+      <div class="field"><label>本年中に払った社会保険料の合計</label><div class="money"><input id="soc" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+      <div class="hint">国民年金・国民年金基金は<b>控除証明書の添付が必要</b>（日本年金機構から届くハガキ）。国民健康保険は証明書不要です。用紙の「種類」「支払先」「負担する人の氏名」は手書きしてください。</div>
+    </section>
 
-  <!-- 5 -->
-  <section class="card" id="c-ideco">
-    <div class="card-h"><span class="stepno">5</span><h2>iDeCo・小規模企業共済の掛金</h2><span class="opt">ない人は空欄</span></div>
-    <p class="sub">「小規模企業共済等掛金払込証明書」の金額。給与天引きの企業型DCは会社が把握しているので入れません。</p>
-    <div class="field"><label>本年中に払った掛金の合計</label><div class="money"><input id="ideco" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
-  </section>
+    <!-- 5 -->
+    <section class="card" id="c-ideco" data-region="ideco">
+      <div class="card-h"><span class="stepno">5</span><h2>iDeCo・小規模企業共済の掛金</h2><span class="opt">ない人は空欄</span></div>
+      <p class="sub">「小規模企業共済等掛金払込証明書」の金額。給与天引きの企業型DCは会社が把握しているので入れません。</p>
+      <div class="field"><label>iDeCo（個人型確定拠出年金）の掛金</label><div class="money"><input id="ideco" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+      <div class="field"><label>小規模企業共済の掛金（中小機構）</label><div class="money"><input id="kyosai" inputmode="numeric" placeholder="0"><span class="unit">円</span><button class="clr" aria-label="消去" hidden>×</button></div></div>
+    </section>
 
-  <!-- transfer guide -->
-  <section class="card" id="c-tr">
-    <div class="card-h"><span class="stepno">✓</span><h2>申告書への転記ガイド</h2></div>
-    <p class="sub">様式の記号（A・B・①…）ごとに書く数字です。ガイド③タブの様式画像と合わせてご覧ください。</p>
-    <table class="tr-table" id="tr"></table>
-    <button type="button" class="reset" id="reset">入力をすべて消す</button>
-    <p class="foot">※概算です。控除額の計算は1円未満切り上げ（申告書の計算式どおり）。実際の年税額は勤務先の計算によります。<br>※計算はこの端末内だけで行われ、入力内容が外部に送信されることはありません。<br>出典：国税庁 <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm" target="_blank" rel="noopener">No.1140 生命保険料控除</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm" target="_blank" rel="noopener">No.1145 地震保険料控除</a></p>
-  </section>
-</main>
-
-<!-- sticky result -->
-<div class="res-bar" id="res">
-  <div class="wrap">
-    <div class="res-top" id="res-top" role="button" aria-expanded="false">
-      <div class="lab">保険料控除の合計（概算）<b id="res-sum-label">内訳を見る</b></div>
-      <div class="tot" id="res-total">¥0</div>
-      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
-    </div>
-    <div class="res-body" id="res-body"></div>
-  </div>
+    <!-- summary -->
+    <section class="card" id="c-sum">
+      <div class="card-h"><span class="stepno">✓</span><h2>控除額のまとめ</h2></div>
+      <ul class="sum-list" id="sum"></ul>
+      <button type="button" class="reset" id="reset">入力をすべて消す</button>
+      <p class="foot">※概算です。控除額の計算は1円未満切り上げ（申告書の計算式どおり）。実際の年税額は勤務先の計算によります。<br>※計算はこの端末内だけで行われ、入力内容が外部に送信されることはありません。<br>出典：国税庁 <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1140.htm" target="_blank" rel="noopener">No.1140 生命保険料控除</a> ／ <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shotoku/1145.htm" target="_blank" rel="noopener">No.1145 地震保険料控除</a> ／ <a href="https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/pdf/2026bun_04.pdf" target="_blank" rel="noopener">令和8年分 保険料控除申告書（様式）</a></p>
+    </section>
+  </main>
 </div>
 
 <script>
 /* ===== 計算（令和8年分。1円未満切り上げ） ===== */
 const num=v=>{const n=parseInt(String(v).replace(/[^\d]/g,""),10);return isNaN(n)?0:n;};
 const yen=n=>"¥"+Math.round(n).toLocaleString("ja-JP");
+const fmt=n=>Math.round(n).toLocaleString("ja-JP");
 const cN=p=>p<=0?0:p<=20000?p:p<=40000?Math.ceil(p/2)+10000:p<=80000?Math.ceil(p/4)+20000:40000;           // 計算式Ⅰ（新）
 const cN6=p=>p<=0?0:p<=30000?p:p<=60000?Math.ceil(p/2)+15000:p<=120000?Math.ceil(p/4)+30000:60000;        // 計算式Ⅱ（23歳未満の扶養親族あり・一般の新）
 const cO=p=>p<=0?0:p<=25000?p:p<=50000?Math.ceil(p/2)+12500:p<=100000?Math.ceil(p/4)+25000:50000;         // 計算式Ⅲ（旧）
@@ -222,19 +246,143 @@ function calc(){
   const life=Math.min(gen+care+pen,120000);
   const eq=num(state.eq),lg=num(state.lg);
   const eqB=Math.min(eq,50000),eqC=cLong(lg);const jishin=Math.min(eqB+eqC,50000);
-  const soc=num(state.soc),ideco=num(state.ideco);
-  return {u23,A,B,C,D,E,i1,i2,i3,i4,i5,gen,care,i6,i7,i8,pen,life,eq,lg,eqB,eqC,jishin,soc,ideco,total:life+jishin+soc+ideco};
+  const soc=num(state.soc),ideco=num(state.ideco),kyosai=num(state.kyosai);
+  return {u23,A,B,C,D,E,i1,i2,i3,i4,i5,gen,care,i6,i7,i8,pen,life,eq,lg,eqB,eqC,jishin,soc,ideco,kyosai,small:ideco+kyosai,total:life+jishin+soc+ideco+kyosai};
 }
 
 /* ===== 状態（端末内に自動保存） ===== */
 const KEY="hoken-r8";
-const blank=()=>({u23:"no",rows:[{cat:"gen",kind:"new",amt:""}],eq:"",lg:"",soc:"",ideco:""});
+const blank=()=>({u23:"no",rows:[{cat:"gen",kind:"new",amt:""}],eq:"",lg:"",soc:"",ideco:"",kyosai:""});
 let state=blank();
 try{const s=JSON.parse(localStorage.getItem(KEY)||"null");if(s&&Array.isArray(s.rows))state=Object.assign(blank(),s);}catch(e){}
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}};
 const $=s=>document.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const CAT={gen:"一般の生命保険料",care:"介護医療保険料",pen:"個人年金保険料"};
+const CAP={gen:4,care:3,pen:3};  // 用紙の行数
+
+/* ===== 用紙上の欄の位置（様式画像 1853×1310 px 上の [x, y, 幅, 高さ]） ===== */
+const IW=1853,IH=1310;
+const F={
+  // 一般の生命保険料：各行の (a) 金額欄と 新・旧 の位置
+  genRows:[[312,357],[357,402],[402,447],[447,490]], careRows:[[615,660],[660,705],[705,750]], penRows:[[795,843],[843,890],[890,935]],
+  aCol:[820,960], shinX:783, kyuX:808,
+  A:[248,490,137,40], B:[248,573,137,42], mu:[377,497], ari:[377,547],
+  i1:[580,490,185,40], i2:[580,533,185,40], i3:[580,573,185,42],
+  i4:[870,490,155,40], i5:[870,533,155,40], iI:[870,573,155,42],
+  C:[248,750,137,45], iRo:[870,750,155,45],
+  D:[248,935,137,45], E:[248,980,137,45], i6:[580,935,185,45], i7:[580,980,185,45], i8:[870,935,155,45], iHa:[870,980,155,45],
+  star:[140,1040,250,45], kei:[875,1085,150,35],
+  eqRows:[[335,425],[425,515]], eqCol:[1575,1685], eqMark:[1543,368], lgMark:[1543,405], eqMark2:[1543,455], lgMark2:[1543,493],
+  eqB:[1575,525,155,45], eqC:[1575,575,155,40], eqTotal:[1575,680,155,50],
+  socRows:[[798,845],[845,890]], socCol:[1575,1730], socTotal:[1575,890,155,45],
+  kyosaiRow:[1575,1015,155,45], idecoRow:[1575,1110,155,45], smallTotal:[1575,1205,155,45]
+};
+// box = 枠で囲む範囲、mbox = スマホ幅で画面いっぱいに拡大して見せる範囲（数字が入る列だけ）
+const REGION={
+  u23:{box:[105,480,960,140],mbox:[240,480,560,140],name:"23歳未満の扶養親族の有無・②⑤"},
+  life:{box:[105,300,960,330],mbox:[560,300,480,330],name:"一般の生命保険料"},
+  care:{box:[105,610,960,190],mbox:[560,610,480,190],name:"介護医療保険料"},
+  pen:{box:[105,790,960,240],mbox:[560,790,480,240],name:"個人年金保険料"},
+  star:{box:[105,1020,960,105],mbox:[560,1020,480,105],name:"☆欄・生命保険料控除額 計"},
+  eq:{box:[1035,255,710,490],mbox:[1300,255,445,490],name:"地震保険料控除"},
+  soc:{box:[1035,750,710,195],mbox:[1300,750,445,195],name:"社会保険料控除"},
+  ideco:{box:[1035,950,710,320],mbox:[1300,950,445,320],name:"小規模企業共済等掛金控除"},
+  all:{box:[0,0,IW,IH],name:""}
+};
+const P=(x,y,w,h)=>`left:${x/IW*100}%;top:${y/IH*100}%;width:${w/IW*100}%;height:${h/IH*100}%`;
+const T=(box,txt,cls="")=>txt?`<span class="ov ${cls}" style="${P(...box)}">${esc(txt)}</span>`:"";
+const V=(box,n,cls="")=>n>0?T(box,fmt(n),cls):"";
+const CIRC=(cx,cy,r=17)=>`<span class="circ" style="${P(cx-r,cy-r,r*2,r*2)}"></span>`;
+
+function renderOverlay(c){
+  let h="";
+  // 契約ごとの行（区分ごとに上から）
+  const byCat={gen:[],care:[],pen:[]};
+  state.rows.forEach(r=>{if(num(r.amt)>0)byCat[r.cat].push(r);});
+  const rowsOf={gen:F.genRows,care:F.careRows,pen:F.penRows};
+  Object.entries(byCat).forEach(([cat,list])=>{
+    list.slice(0,CAP[cat]).forEach((r,i)=>{
+      const [y0,y1]=rowsOf[cat][i];
+      h+=T([F.aCol[0],y0,F.aCol[1]-F.aCol[0],y1-y0],fmt(num(r.amt)));
+      if(cat!=="care")h+=CIRC(r.kind==="old"?F.kyuX:F.shinX,(y0+y1)/2+2,15);
+    });
+    if(list.length>CAP[cat]){const [y0,y1]=rowsOf[cat][CAP[cat]-1];h+=T([F.aCol[0]-320,y0,300,y1-y0],`※${list.length-CAP[cat]}枚分は合算して記入`,"note");}
+  });
+  // 一般
+  h+=V(F.A,c.A)+V(F.B,c.B);
+  h+=CIRC(...(c.u23?F.ari:F.mu),16);
+  if(c.u23){h+=V(F.i2,c.i2)+V(F.i5,c.i5);}else{h+=V(F.i1,c.i1)+V(F.i4,c.i4);}
+  h+=V(F.i3,c.i3)+V(F.iI,c.gen);
+  if(c.u23)h+=T(F.star,"← お子さんの氏名・生年月日・続柄を記入","note");
+  // 介護医療・個人年金
+  h+=V(F.C,c.C)+V(F.iRo,c.care);
+  h+=V(F.D,c.D)+V(F.E,c.E)+V(F.i6,c.i6)+V(F.i7,c.i7)+V(F.i8,c.i8)+V(F.iHa,c.pen);
+  h+=V(F.kei,c.life);
+  // 地震
+  if(c.eq>0){const [y0,y1]=F.eqRows[0];h+=T([F.eqCol[0],y0,F.eqCol[1]-F.eqCol[0],y1-y0-45],fmt(c.eq))+CIRC(...F.eqMark,22);}
+  if(c.lg>0){const [y0,y1]=F.eqRows[c.eq>0?1:0];h+=T([F.eqCol[0],y0,F.eqCol[1]-F.eqCol[0],y1-y0-45],fmt(c.lg))+CIRC(...(c.eq>0?F.lgMark2:F.lgMark),24);}
+  h+=V(F.eqB,c.eq)+V(F.eqC,c.lg)+V(F.eqTotal,c.jishin);
+  // 社会保険料
+  if(c.soc>0){const [y0,y1]=F.socRows[0];h+=T([F.socCol[0],y0,F.socCol[1]-F.socCol[0],y1-y0],fmt(c.soc))+V(F.socTotal,c.soc);}
+  // 小規模企業共済等
+  h+=V(F.kyosaiRow,c.kyosai)+V(F.idecoRow,c.ideco)+V(F.smallTotal,c.small);
+  $("#ov").innerHTML=h;
+}
+
+/* ===== プレビューの表示制御 ===== */
+const pv=$("#pv"),stage=$("#stage"),wrap=$("#pv-wrap");
+let mode="follow",curRegion="life";
+function setStageWidth(w){stage.style.setProperty("--sw",Math.round(w)+"px");}
+function showRegion(key,animate=true){
+  const r=REGION[key]||REGION.life;
+  const pvW=pv.clientWidth,pvH=pv.clientHeight,narrow=window.innerWidth<900;  // 900px未満＝プレビューを上に固定するスマホ配置
+  const [x,y,w,h]=(narrow&&mode==="follow"&&r.mbox)?r.mbox:r.box;
+  const reg=$("#region");reg.hidden=key==="all";reg.style.cssText=P(...r.box);
+  $("#pv-region-name").textContent=r.name?`｜${r.name}`:"";
+  let sw;
+  if(mode==="all")sw=pvW;
+  else if(mode==="big")sw=Math.max(pvW,1500);
+  else{ // follow：入力中の欄（数字の列）が横幅いっぱいに入る倍率。PC幅なら用紙全体を表示して枠で示す
+    sw=narrow?Math.min(Math.max(pvW,(pvW-10)/(w/IW)),2600):pvW;
+  }
+  setStageWidth(sw);
+  const scale=sw/IW;
+  const left=Math.max(0,x*scale-5),top=Math.max(0,y*scale-(mode==="follow"&&!narrow?20:6));
+  const centerTop=h*scale<pvH?Math.max(0,top-(pvH-h*scale)/2):top;
+  requestAnimationFrame(()=>pv.scrollTo({left,top:mode==="follow"?centerTop:top,behavior:animate?"smooth":"instant"}));
+}
+function setMode(m){mode=m;["follow","all","big"].forEach(k=>$("#zb-"+k).setAttribute("aria-pressed",k===m));showRegion(m==="all"?"all":curRegion);}
+$("#zb-follow").addEventListener("click",()=>setMode("follow"));
+$("#zb-all").addEventListener("click",()=>setMode("all"));
+$("#zb-big").addEventListener("click",()=>setMode("big"));
+$("#zb-full").addEventListener("click",()=>{const on=wrap.classList.toggle("full");$("#zb-full").textContent=on?"✕ 閉じる":"⤢ 大きく表示";document.body.style.overflow=on?"hidden":"";if(on&&mode==="follow")setMode("big");else showRegion(mode==="all"?"all":curRegion,false);});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&wrap.classList.contains("full"))$("#zb-full").click();});
+function focusRegion(key){
+  if(key===curRegion&&mode!=="all")return;
+  curRegion=key;
+  document.querySelectorAll(".card").forEach(cd=>cd.classList.toggle("active",cd.dataset.region===key||(key==="care"||key==="pen"||key==="star")&&cd.id==="c-life"));
+  if(mode==="all")return;
+  showRegion(key);
+}
+// カード内にフォーカス／タップ → その欄へ。証明書の区分で 介護・個人年金 の欄に切り替え
+document.querySelectorAll(".card[data-region]").forEach(cd=>{
+  const go=e=>{const row=e.target.closest(".row");let key=cd.dataset.region;if(row){const r=state.rows[+row.dataset.i];if(r)key=r.cat==="care"?"care":r.cat==="pen"?"pen":"life";}focusRegion(key);};
+  cd.addEventListener("focusin",go);cd.addEventListener("pointerdown",go);
+});
+// スクロールで「プレビューのすぐ下」に来たカードに追従（スマホではプレビューが上に固定されている分を除いて判定）
+let io=null;
+function setupIO(){
+  if(io)io.disconnect();
+  const vh=window.innerHeight;
+  const topOff=window.innerWidth<900?wrap.getBoundingClientRect().height+parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--head"))||52:vh*0.2;
+  const bandTop=Math.min(topOff+10,vh-120),bandBottom=Math.max(vh-(bandTop+180),0);
+  io=new IntersectionObserver(es=>{es.forEach(en=>{if(en.isIntersecting&&!(document.activeElement&&document.activeElement.closest(".card"))){focusRegion(en.target.dataset.region);}});},{rootMargin:`-${bandTop}px 0px -${bandBottom}px 0px`,threshold:0});
+  document.querySelectorAll(".card[data-region]").forEach(cd=>io.observe(cd));
+}
+setupIO();
+window.addEventListener("resize",()=>{setupIO();});
+new ResizeObserver(()=>showRegion(mode==="all"?"all":curRegion,false)).observe(pv);
 
 /* ===== 入力UI ===== */
 function fmtInput(el){const n=num(el.value);el.value=n?n.toLocaleString("ja-JP"):"";const c=el.parentElement.querySelector(".clr");if(c)c.hidden=!n;}
@@ -243,9 +391,9 @@ function wireMoney(el,onChange){
   const c=el.parentElement.querySelector(".clr");if(c)c.addEventListener("click",()=>{el.value="";c.hidden=true;onChange(0);el.focus();});
 }
 function renderRows(){
-  const box=$("#rows");
-  box.innerHTML=state.rows.map((r,i)=>`<div class="row" data-i="${i}">
-    <div class="rh"><b>証明書 ${i+1}</b>${state.rows.length>1?`<button type="button" class="del">削除</button>`:""}</div>
+  const box=$("#rows");const idx={gen:0,care:0,pen:0};
+  box.innerHTML=state.rows.map((r,i)=>{const n=++idx[r.cat];return `<div class="row" data-i="${i}">
+    <div class="rh"><b>証明書 ${i+1}<small>用紙：${CAT[r.cat].replace("保険料","")} ${n}行目${n>CAP[r.cat]?"（行が足りないので合算）":""}</small></b>${state.rows.length>1?`<button type="button" class="del">削除</button>`:""}</div>
     <div class="seg three sm cat">${Object.entries(CAT).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="${r.cat===k}">${v.replace("保険料","").replace("の生命","")}</button>`).join("")}</div>
     <div class="seg sm kind"${r.cat==="care"?' style="display:none"':""}>
       <button type="button" data-v="new" aria-pressed="${r.kind==="new"}">新<small>平成24年1月1日以後の契約</small></button>
@@ -253,10 +401,10 @@ function renderRows(){
     </div>
     <div class="field"><label>申告額（年間・12月まで払った場合）</label><div class="money"><input inputmode="numeric" placeholder="0" value="${esc(r.amt?num(r.amt).toLocaleString("ja-JP"):"")}" aria-label="証明書${i+1}の金額"><span class="unit">円</span><button class="clr" aria-label="消去"${r.amt?"":" hidden"}>×</button></div></div>
     <div class="calc" data-calc></div>
-  </div>`).join("");
+  </div>`;}).join("");
   box.querySelectorAll(".row").forEach(row=>{
     const i=+row.dataset.i,r=state.rows[i];
-    row.querySelectorAll(".cat button").forEach(b=>b.addEventListener("click",()=>{r.cat=b.dataset.v;if(r.cat==="care")r.kind="new";save();renderRows();update();}));
+    row.querySelectorAll(".cat button").forEach(b=>b.addEventListener("click",()=>{r.cat=b.dataset.v;if(r.cat==="care")r.kind="new";save();renderRows();update();focusRegion(r.cat==="care"?"care":r.cat==="pen"?"pen":"life");}));
     row.querySelectorAll(".kind button").forEach(b=>b.addEventListener("click",()=>{r.kind=b.dataset.v;row.querySelectorAll(".kind button").forEach(x=>x.setAttribute("aria-pressed",x===b));save();update();}));
     const del=row.querySelector(".del");if(del)del.addEventListener("click",()=>{state.rows.splice(i,1);save();renderRows();update();});
     wireMoney(row.querySelector("input"),v=>{r.amt=v?String(v):"";save();update();});
@@ -264,61 +412,29 @@ function renderRows(){
 }
 $("#add").addEventListener("click",()=>{state.rows.push({cat:"gen",kind:"new",amt:""});save();renderRows();update();const rows=document.querySelectorAll(".row");const last=rows[rows.length-1];last.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(()=>last.querySelector("input").focus(),350);});
 $("#seg-u23").querySelectorAll("button").forEach(b=>b.addEventListener("click",()=>{state.u23=b.dataset.v;$("#seg-u23").querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));save();update();}));
-[["eq","eq"],["lg","lg"],["soc","soc"],["ideco","ideco"]].forEach(([id,k])=>{const el=$("#"+id);el.value=state[k]?num(state[k]).toLocaleString("ja-JP"):"";fmtInput(el);wireMoney(el,v=>{state[k]=v?String(v):"";save();update();});});
+[["eq","eq"],["lg","lg"],["soc","soc"],["ideco","ideco"],["kyosai","kyosai"]].forEach(([id,k])=>{const el=$("#"+id);el.value=state[k]?num(state[k]).toLocaleString("ja-JP"):"";fmtInput(el);wireMoney(el,v=>{state[k]=v?String(v):"";save();update();});});
 $("#reset").addEventListener("click",()=>{if(!confirm("入力をすべて消しますか？"))return;state=blank();save();location.reload();});
-$("#res-top").addEventListener("click",()=>{const o=$("#res").classList.toggle("open");$("#res-top").setAttribute("aria-expanded",o);$("#res-sum-label").textContent=o?"内訳を閉じる":"内訳を見る";});
 
 /* ===== 表示更新 ===== */
 function update(){
   const c=calc();
-  // 行ごとの控除額の目安
   document.querySelectorAll(".row").forEach(row=>{
     const r=state.rows[+row.dataset.i],a=num(r.amt),el=row.querySelector("[data-calc]");
     if(!a){el.textContent="";return;}
     const v=r.cat==="care"?cN(a):r.kind==="old"?cO(a):(r.cat==="gen"&&c.u23)?cN6(a):cN(a);
     el.innerHTML=`この契約だけなら控除 <b>${yen(v)}</b>（同じ区分は合算して計算）`;
   });
-  $("#res-total").textContent=yen(c.total);
-  const R=(l,v,sub)=>`<div class="res-row${sub?" sub":""}"><span>${l}</span><b>${yen(v)}</b></div>`;
-  $("#res-body").innerHTML=R("生命保険料控除",c.life)+R("一般の生命保険料 ㋑",c.gen,1)+R("介護医療保険料 ㋺",c.care,1)+R("個人年金保険料 ㋩",c.pen,1)
-    +R("地震保険料控除",c.jishin)+R("社会保険料控除",c.soc)+R("小規模企業共済等掛金控除",c.ideco)
-    +`<p class="res-note">生命保険料控除は3区分合計で最高12万円${c.gen+c.care+c.pen>120000?"（上限に達しています）":""}。地震保険料控除は最高5万円。社会保険料・小規模企業共済等掛金は全額が控除されます。</p>`;
-  // 転記ガイド
-  const u=c.u23;
-  const rows=[
-    ["hd","一般の生命保険料"],
-    ["A","(a)のうち新保険料等の金額の合計額",c.A],
-    ["B","(a)のうち旧保険料等の金額の合計額",c.B],
-    ["有無","年齢23歳未満の扶養親族の有無",u?"有 に○":"無 に○"],
-    ...(u?[["②","Aを計算式Ⅱに当てはめた金額（最高60,000円）",c.i2]]:[["①","Aを計算式Ⅰに当てはめた金額（最高40,000円）",c.i1]]),
-    ["③","Bを計算式Ⅲに当てはめた金額（最高50,000円）",c.i3],
-    ...(u?[["⑤","計（②＋③）（最高60,000円）",c.i5]]:[["④","計（①＋③）（最高40,000円）",c.i4]]),
-    ["㋑",u?"③と⑤のいずれか大きい金額":"③と④のいずれか大きい金額",c.gen],
-    ["hd","介護医療保険料"],
-    ["C","(a)の金額の合計額",c.C],
-    ["㋺","Cを計算式Ⅰに当てはめた金額（最高40,000円）",c.care],
-    ["hd","個人年金保険料"],
-    ["D","(a)のうち新保険料等の金額の合計額",c.D],
-    ["E","(a)のうち旧保険料等の金額の合計額",c.E],
-    ["⑥","Dを計算式Ⅰに当てはめた金額（最高40,000円）",c.i6],
-    ["⑦","Eを計算式Ⅲに当てはめた金額（最高50,000円）",c.i7],
-    ["⑧","計（⑥＋⑦）（最高40,000円）",c.i8],
-    ["㋩","⑦と⑧のいずれか大きい金額",c.pen],
-    ["hd","生命保険料控除額"],
-    ["計","㋑＋㋺＋㋩（最高120,000円）",c.life],
-    ["hd","地震保険料控除"],
-    ["Ⓑ","Ⓐのうち地震保険料の金額の合計額",c.eq],
-    ["Ⓒ","Ⓐのうち旧長期損害保険料の金額の合計額",c.lg],
-    ["控除額","Ⓑ（最高50,000円）＋Ⓒの計算額（最高15,000円）＝（最高50,000円）",c.jishin],
-    ["hd","社会保険料控除・小規模企業共済等掛金控除"],
-    ["合計","社会保険料控除 合計（控除額）",c.soc],
-    ["合計","小規模企業共済等掛金控除 合計（控除額）",c.ideco]
-  ];
-  $("#tr").innerHTML=`<thead><tr><th>欄</th><th>書くもの</th><th style="text-align:right">金額</th></tr></thead><tbody>`+rows.map(r=>r[0]==="hd"?`<tr class="hd"><td colspan="3">${r[1]}</td></tr>`
-    :`<tr class="${typeof r[2]==="number"&&r[2]===0?"zero":""}"><td><span class="k">${r[0]}</span></td><td>${r[1]}</td><td class="v">${typeof r[2]==="number"?r[2].toLocaleString("ja-JP")+" 円":esc(r[2])}</td></tr>`).join("")+"</tbody>";
+  $("#pv-total").textContent=yen(c.total);
+  renderOverlay(c);
+  const L=(l,v,cls="")=>`<li class="${cls}"><span>${l}</span><b>${yen(v)}</b></li>`;
+  $("#sum").innerHTML=L("生命保険料控除（最高12万円）",c.life)+L("一般の生命保険料 ㋑",c.gen,"sub")+L("介護医療保険料 ㋺",c.care,"sub")+L("個人年金保険料 ㋩",c.pen,"sub")
+    +L("地震保険料控除（最高5万円）",c.jishin)+L("社会保険料控除（全額）",c.soc)+L("小規模企業共済等掛金控除（全額）",c.small)+L("保険料控除 合計",c.total,"total");
 }
 $("#seg-u23").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.u23));
 renderRows();update();
+const img=stage.querySelector("img");
+const init=()=>showRegion("life",false);
+if(img.complete)init();else img.addEventListener("load",init);
 </script>
 </body>
 </html>
