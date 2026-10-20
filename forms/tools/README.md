@@ -4,7 +4,8 @@
 `forms/f1.webp`〜`f4.webp` と、HTML内の `FORMS` データ（欄ごとの位置％と記載例）で動いています。
 
 ## 1. 様式PDFを取得（令和8年分の例）
-- ① 扶養控除等申告書: https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/pdf/2026bun_01.pdf
+- ① 扶養控除等申告書: https://www.nta.go.jp/taxes/tetsuzuki/shinsei/annai/gensen/pdf/2027bun_01.pdf
+  ※年末調整の時期に提出を受けるのは**翌年分**（令和8年の年末調整なら令和9年分）なので、①だけ年が1つ先。欄の位置は令和8年分と同じ
 - ② 基礎・配偶者・特定親族・所得金額調整: 同 `2026bun_06.pdf`
 - ③ 保険料控除申告書: 同 `2026bun_04.pdf`
 - ④ 住宅ローン: 国税庁「年末調整で住宅借入金等特別控除を受ける方へ」の記載例 https://www.nta.go.jp/publication/pamph/shotoku/jukari/01.pdf の右側（申告書＋証明書）を切り抜き
