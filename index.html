@@ -945,10 +945,14 @@ function renderQA(){
 async function loadQA(){
   if(CONFIG.qaSheetUrl){
     try{
-      const res=await fetch(CONFIG.qaSheetUrl);const txt=await res.text();
+      // Googleスプレッドシート（リンクを知っている全員が閲覧可）の gviz JSON を読む。
+      // 列：A 質問 / B 回答 / C カテゴリ / D 公開（TRUE・FALSE） / E 更新日
+      const res=await fetch(CONFIG.qaSheetUrl,{cache:"no-store"});const txt=await res.text();
       const json=JSON.parse(txt.replace(/^[^{]*\(/,"").replace(/\);?\s*$/,""));
-      const rows=json.table.rows.map(r=>r.c.map(c=>c?c.v:""));
-      const data=rows.map(r=>({q:r[0],a:r[1],c:r[2]||"その他",pub:String(r[3]).toUpperCase()!=="FALSE",u:r[4]||""})).filter(x=>x.q&&x.pub);
+      const cell=c=>c==null?"":(c.f!=null?c.f:(c.v==null?"":String(c.v)));   // f＝表示どおりの文字列（日付はこちらを使う）
+      let rows=json.table.rows.map(r=>(r.c||[]).map(cell));
+      if(rows.length&&/質問/.test(rows[0][0]||""))rows=rows.slice(1);          // 見出し行が混ざっていたら除く
+      const data=rows.map(r=>({q:(r[0]||"").trim(),a:(r[1]||"").trim(),c:(r[2]||"").trim()||"その他",pub:!/^(false|いいえ|非公開|no|0)$/i.test((r[3]||"").trim()),u:(r[4]||"").trim()})).filter(x=>x.q&&x.a&&x.pub);
       if(data.length){QA=data;renderQA();return;}
     }catch(e){console.warn("QAシート取得失敗。内蔵サンプルを表示します。",e);}
   }

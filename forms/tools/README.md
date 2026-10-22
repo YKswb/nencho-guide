@@ -36,6 +36,12 @@ node fields-check.mjs ../../hoken.html ../src/png/f3-1.png ./check/f3-fields.png
 ```
 で全欄に枠と名前を描いた画像ができるので、様式が変わった年はこれでずれを確認して `F` を直します。
 
+## 5. Q&A をスプレッドシートから読む
+`qa_template.csv`（内蔵Q&A 14問）を Google スプレッドシートにインポートし、列は A 質問／B 回答／C カテゴリ／D 公開（TRUE/FALSE）／E 更新日。
+共有を「リンクを知っている全員（閲覧者）」にして、`index.html` の `CONFIG.qaSheetUrl` に
+`https://docs.google.com/spreadsheets/d/<スプレッドシートID>/gviz/tq?tqx=out:json&sheet=<シート名>&headers=1` を設定する。
+フォームの回答が入るスプレッドシートは個人情報を含むので公開しないこと（公開用は別ファイルにする）。
+
 ## 注意
 - 様式が変わると欄の位置が動くので、翌年分は必ず overlay で確認すること。
 - 記載例の人物設定（記入 太郎／花子／一郎／次郎）と金額は HTML の `FORMS` コメント参照。
